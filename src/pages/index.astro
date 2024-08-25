@@ -1,0 +1,38 @@
+---
+import { getPosts } from "../modules/post";
+
+const posts = await getPosts();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <div class="max-w-screen-sm m-auto">
+      <h1 class="text-3xl mb-8">포스트 모음집</h1>
+      <div class="flex flex-col gap-4">
+        {
+          posts.map((post) => {
+            return (
+              <a href={post.link} target="_blank">
+                <div>
+                  <span class="text-lg font-medium">{post.title}</span>
+                  {" - "}
+                  {post.channel.description}
+                  <span class="text-sm text-orange-900">
+                    {post.date}
+                  </span>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </body>
+</html>
