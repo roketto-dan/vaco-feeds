@@ -1,6 +1,7 @@
 import Parser from "rss-parser";
 import { format } from "date-fns";
 import { users } from "../data/user";
+import { notionPosts } from "../data/notionPost";
 
 const parser = new Parser();
 
@@ -16,6 +17,39 @@ type Post = {
 };
 
 export async function getPosts(): Promise<Post[]> {
+  const rssFeedPosts = await fetchRssFeedPosts();
+  const notionPosts = getNotionPosts();
+  const posts = [
+    ...rssFeedPosts,
+    ...notionPosts,
+  ];
+
+  return posts.sort((a, b) => {
+    if (a.date === undefined) return 1;
+    if (b.date === undefined) return -1;
+
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+}
+
+function getNotionPosts(): Post[] {
+  return notionPosts.map((post) => {
+    const user = users.find((user) => user.name === post.user);
+
+    return {
+      title: post.title,
+      link: post.link,
+      date: post.date,
+      channel: {
+        title: user?.name ?? post.user,
+        link: user?.feedUrl ?? "unknown",
+        description: `${post.user} Notion`,
+      },
+    };
+  });
+}
+
+export async function fetchRssFeedPosts(): Promise<Post[]> {
   const feedUrls = users.map((user) => user.feedUrl);
 
   const itemsSettledResult = await Promise.allSettled(
@@ -43,12 +77,6 @@ export async function getPosts(): Promise<Post[]> {
       return result.value;
     })
     .flat()
-    .sort((a, b) => {
-      if (a.pubDate === undefined) return 1;
-      if (b.pubDate === undefined) return -1;
-
-      return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
-    })
     .map((item) => ({
       ...item,
       title: item.title ?? "unknown",
