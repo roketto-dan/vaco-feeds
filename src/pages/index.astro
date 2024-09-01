@@ -2,6 +2,7 @@
 import { getPosts } from "../modules/post";
 
 const posts = await getPosts();
+const NOTION_UPLOAD_REQUEST_PAGE = "https://github.com/oddmj/vaco-feeds/issues/new?assignees=0jaaack&labels=feed&projects=&template=post_request_template.md&title=%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%97%85%EB%A1%9C%EB%93%9C+%EC%9A%94%EC%B2%AD%3A+%5B%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%A0%9C%EB%AA%A9%5D";
 ---
 
 <html lang="en">
@@ -14,7 +15,10 @@ const posts = await getPosts();
   </head>
   <body>
     <div class="max-w-screen-sm m-auto">
-      <h1 class="text-3xl mb-8">포스트 모음집</h1>
+      <section class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl">포스트 모음집</h1>
+        <a href={NOTION_UPLOAD_REQUEST_PAGE} target="_blank">내 노션 페이지 업로드하기</a>
+      </section>
       <div class="flex flex-col gap-4">
         {
           posts.map((post) => {
