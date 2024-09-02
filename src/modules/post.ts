@@ -10,6 +10,7 @@ type Post = {
   title: string;
   link: string;
   date: string;
+  isRecentPost: boolean;
   channel: {
     title: string;
     link: string;
@@ -41,6 +42,7 @@ function getNotionPosts(): Post[] {
       title: post.title,
       link: post.link,
       date: post.date,
+      isRecentPost: post.date ? isDateRecent({ date: post.date, days: 7 }) : false,
       channel: {
         title: user?.name ?? post.user,
         link: user?.feedUrl ?? "unknown",
@@ -83,7 +85,7 @@ export async function fetchRssFeedPosts(): Promise<Post[]> {
       title: item.title ?? "unknown",
       link: item.link ?? "",
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "unknown",
-      isRecentPost: item.pubDate ? isDateRecent({ date: item.pubDate, days: 7 }) : "",
+      isRecentPost: item.pubDate ? isDateRecent({ date: item.pubDate, days: 7 }) : false,
     }));
 
   return posts;
