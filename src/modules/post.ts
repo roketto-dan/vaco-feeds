@@ -2,6 +2,7 @@ import Parser from "rss-parser";
 import { format } from "date-fns";
 import { users } from "../data/user";
 import { notionPosts } from "../data/notionPost";
+import { isDateRecent } from "../utils/isDateRecent";
 
 const parser = new Parser();
 
@@ -82,6 +83,7 @@ export async function fetchRssFeedPosts(): Promise<Post[]> {
       title: item.title ?? "unknown",
       link: item.link ?? "",
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "unknown",
+      isRecentPost: item.pubDate ? isDateRecent({ date: item.pubDate, days: 7 }) : "",
     }));
 
   return posts;
