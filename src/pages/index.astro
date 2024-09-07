@@ -1,9 +1,10 @@
 ---
 import { getPosts } from "../modules/post";
-import { Icon } from 'astro-icon/components'
+import { Icon } from "astro-icon/components";
 
 const posts = await getPosts();
-const NOTION_UPLOAD_REQUEST_PAGE = "https://github.com/oddmj/vaco-feeds/issues/new?assignees=0jaaack&labels=feed&projects=&template=post_request_template.md&title=%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%97%85%EB%A1%9C%EB%93%9C+%EC%9A%94%EC%B2%AD%3A+%5B%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%A0%9C%EB%AA%A9%5D";
+const NOTION_UPLOAD_REQUEST_PAGE =
+  "https://github.com/oddmj/vaco-feeds/issues/new?assignees=0jaaack&labels=feed&projects=&template=post_request_template.md&title=%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%97%85%EB%A1%9C%EB%93%9C+%EC%9A%94%EC%B2%AD%3A+%5B%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%A0%9C%EB%AA%A9%5D";
 ---
 
 <html lang="en">
@@ -13,23 +14,58 @@ const NOTION_UPLOAD_REQUEST_PAGE = "https://github.com/oddmj/vaco-feeds/issues/n
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (
+        w: Window,
+        d: Document,
+        s: "script",
+        l: "dataLayer",
+        i: "GTM-KDGJLWXF"
+      ) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode!.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-KDGJLWXF");
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
   <body
     class="overscroll-none w-full h-full bg-white"
     style={{
-      backgroundImage:`
+      backgroundImage: `
         radial-gradient(circle farthest-corner at top left, rgba(270, 243, 97, 1) 0%, rgba(225, 243, 97, 0) 50%),
         radial-gradient(circle farthest-side at top right, rgba(181, 176, 177, 1) 0%, rgba(181, 176, 177, 0) 10%),
         radial-gradient(circle farthest-corner at bottom right, rgba(204, 104, 119, 1) 0%, rgba(204, 104, 119, 0) 33%),
         radial-gradient(circle farthest-corner at top right, rgba(153, 221, 240, 1) 0%, rgba(155, 221, 240, 0) 50%),
         radial-gradient(ellipse at bottom center, rgba(254, 43, 0, 1) 0%, rgba(254, 43, 0, 0) 80%)
-      `
+      `,
     }}
   >
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-KDGJLWXF"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
+    <!-- End Google Tag Manager (noscript) -->
     <div class="max-w-screen-sm m-auto shadow-lg shadow-gray-300">
-      <section class="fixed z-10 p-4 justify-between max-w-screen-sm w-full items-center flex bg-white">
+      <section
+        class="fixed z-10 p-4 justify-between max-w-screen-sm w-full items-center flex bg-white"
+      >
         <h1 class="text-lg font-bold">Vaco Feed</h1>
-        <a href={NOTION_UPLOAD_REQUEST_PAGE} target="_blank" class="text-sm p-1 px-2 flex gap-1 items-center transition">
+        <a
+          href={NOTION_UPLOAD_REQUEST_PAGE}
+          target="_blank"
+          class="text-sm p-1 px-2 flex gap-1 items-center transition"
+        >
           <Icon name="mingcute:notion-fill" />
           업로드
         </a>
@@ -38,30 +74,45 @@ const NOTION_UPLOAD_REQUEST_PAGE = "https://github.com/oddmj/vaco-feeds/issues/n
         {
           posts.map((post) => {
             return (
-              <a href={post.link} target="_blank" class="border-t py-3 flex gap-2 justify-between hover:translate-y-[-1px] transition">
+              <a
+                href={post.link}
+                target="_blank"
+                class="border-t py-3 flex gap-2 justify-between hover:translate-y-[-1px] transition"
+              >
                 <div class="flex flex-col gap-2">
                   <div class="flex flex-wrap gap-2 items-center">
-                    <span class="text-lg font-medium flex-grow">{post.title}</span>
-                    {post.isRecentPost && <span class="bg-black h-3 py-2 px-2 text-white text-xs flex items-center font-medium">new</span>}
+                    <span class="text-lg font-medium flex-grow">
+                      {post.title}
+                    </span>
+                    {post.isRecentPost && (
+                      <span class="bg-black h-3 py-2 px-2 text-white text-xs flex items-center font-medium">
+                        new
+                      </span>
+                    )}
                   </div>
                   <span class="text-sm text-gray-700">
                     {post.channel.description}
                   </span>
                 </div>
-                <span class="text-sm">
-                  {post.date}
-                </span>
+                <span class="text-sm">{post.date}</span>
               </a>
             );
           })
         }
       </section>
       <section class="flex justify-end p-4 gap-2 text-sm bg-white border-t">
-        <a href="https://github.com/oddmj/vaco-feeds" class="flex gap-1 items-center">
+        <a
+          href="https://github.com/oddmj/vaco-feeds"
+          class="flex gap-1 items-center"
+        >
           <Icon name="mingcute:github-fill" />
           github
         </a>
-        <a href="mailto:text@mail.com" target="_blank" class="flex gap-1 items-center">
+        <a
+          href="mailto:text@mail.com"
+          target="_blank"
+          class="flex gap-1 items-center"
+        >
           <Icon name="mingcute:mail-line" />
           contact
         </a>
