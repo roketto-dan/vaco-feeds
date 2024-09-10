@@ -53,18 +53,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
     </script>
     <!-- End Google Tag Manager -->
   </head>
-  <body
-    class="overscroll-none w-full h-full bg-white"
-    style={{
-      backgroundImage: `
-        radial-gradient(circle farthest-corner at top left, rgba(270, 243, 97, 1) 0%, rgba(225, 243, 97, 0) 50%),
-        radial-gradient(circle farthest-side at top right, rgba(181, 176, 177, 1) 0%, rgba(181, 176, 177, 0) 10%),
-        radial-gradient(circle farthest-corner at bottom right, rgba(204, 104, 119, 1) 0%, rgba(204, 104, 119, 0) 33%),
-        radial-gradient(circle farthest-corner at top right, rgba(153, 221, 240, 1) 0%, rgba(155, 221, 240, 0) 50%),
-        radial-gradient(ellipse at bottom center, rgba(254, 43, 0, 1) 0%, rgba(254, 43, 0, 0) 80%)
-      `,
-    }}
-  >
+  <body class="overscroll-none w-full h-full bg-gradient-to-r from-white from-80% to-teal-100">
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
@@ -74,35 +63,35 @@ const NOTION_UPLOAD_REQUEST_PAGE =
         style="display:none;visibility:hidden"></iframe></noscript
     >
     <!-- End Google Tag Manager (noscript) -->
-    <div class="max-w-screen-sm m-auto shadow-lg shadow-gray-300">
+    <div class="max-w-screen-sm m-auto">
       <section
-        class="fixed z-10 p-4 justify-between max-w-screen-sm w-full items-center flex bg-white"
+        class="fixed z-10 p-4 justify-between max-w-screen-sm w-full m-auto items-center flex bg-white border-b border-x border-gray-300 backdrop-blur-md bg-white/80"
       >
         <h1 class="text-lg font-bold">Vaco Feed</h1>
         <a
           href={NOTION_UPLOAD_REQUEST_PAGE}
           target="_blank"
-          class="text-sm p-1 px-2 flex gap-1 items-center transition"
+          class="border border-teal-600 hover:border-teal-800 hover:text-teal-800 rounded-lg text-teal-600 text-sm p-1 px-2 flex gap-1 items-center transition"
         >
           <Icon name="mingcute:notion-fill" />
           업로드
         </a>
       </section>
-      <section class="flex flex-col bg-white pt-16 p-4">
+      <section class="flex flex-col bg-white pt-16 border border-gray-300 divide-y divide-solid">
         {
           posts.map((post) => {
             return (
-              <div class="flex gap-2 justify-between border-t py-3">
+              <div class="flex gap-2 justify-between p-4">
                 <div class="flex flex-col gap-2">
-                  <div class="flex flex-wrap gap-2 items-center">
+                  <div class="flex flex-wrap gap-2 items-start">
                     <a
                       href={post.link}
                       target="_blank"
-                      class="flex gap-2 justify-between hover:translate-y-[-1px] transition"
+                      class="flex gap-2 justify-between"
                     >
                       <span class="text-lg font-medium flex-grow">{post.title}</span>
                     </a>
-                    {post.isRecentPost && <span class="bg-black h-3 py-2 px-2 text-white text-xs flex items-center font-medium">new</span>}
+                    {post.isRecentPost && <span class="bg-teal-600 h-1.5 w-1.5 rounded-full" />}
                   </div>
                   <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
                 </div>
@@ -112,7 +101,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
           })
         }
       </section>
-      <section class="flex justify-end p-4 gap-2 text-sm bg-white border-t">
+      <section class="flex justify-end p-4 gap-2 text-sm bg-white border-x border-gray-300">
         <a
           href="https://github.com/oddmj/vaco-feeds"
           class="flex gap-1 items-center"
