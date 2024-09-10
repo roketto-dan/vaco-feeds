@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-  .font-condensed {
+  .font-semi-expanded {
     font-stretch: semi-expanded;
   }
 }
