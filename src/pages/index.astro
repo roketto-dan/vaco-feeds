@@ -1,6 +1,7 @@
 ---
 import { getPosts } from "../modules/post";
-import { Icon } from "astro-icon/components";
+import { Icon } from 'astro-icon/components'
+import { Profile } from '../components/Profile.tsx';
 
 const posts = await getPosts();
 const NOTION_UPLOAD_REQUEST_PAGE =
@@ -86,9 +87,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
                     </a>
                     {post.isRecentPost && <span class="bg-black h-3 py-2 px-2 text-white text-xs flex items-center font-medium">new</span>}
                   </div>
-                  <span class="text-sm text-gray-700">
-                    {post.channel.description}
-                  </span>
+                  <Profile userName={post.user} client:only="react" />
                 </div>
                 <span class="text-sm">{post.date}</span>
               </div>
