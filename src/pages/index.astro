@@ -2,8 +2,25 @@
 import { getPosts } from "../modules/post";
 import { Icon } from 'astro-icon/components'
 import { Profile } from '../components/Profile.tsx';
+import { users } from "../data/user";
+import { getUserProfileImageUrl, getUserBlogImageUrl } from "../modules/profile";
 
 const posts = await getPosts();
+const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
+  const urls = await Promise.all(users.map(user => getUserProfileImageUrl(user.name)));
+  return users.reduce((acc, user, index) => ({
+    ...acc,
+    [user.name]: urls[index],
+  }), {});
+})();
+const blogAvatarUrlByUser: Record<string, string | null> = await (async () => {
+  const urls = await Promise.all(users.map(user => getUserBlogImageUrl(user.name)));
+  return users.reduce((acc, user, index) => ({
+    ...acc,
+    [user.name]: urls[index],
+  }), {});
+})();
+
 const NOTION_UPLOAD_REQUEST_PAGE =
   "https://github.com/oddmj/vaco-feeds/issues/new?assignees=0jaaack&labels=feed&projects=&template=post_request_template.md&title=%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%97%85%EB%A1%9C%EB%93%9C+%EC%9A%94%EC%B2%AD%3A+%5B%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%A0%9C%EB%AA%A9%5D";
 ---
@@ -87,7 +104,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
                     </a>
                     {post.isRecentPost && <span class="bg-black h-3 py-2 px-2 text-white text-xs flex items-center font-medium">new</span>}
                   </div>
-                  <Profile userName={post.user} client:only="react" />
+                  <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
                 </div>
                 <span class="text-sm">{post.date}</span>
               </div>
