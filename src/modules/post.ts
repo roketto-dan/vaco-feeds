@@ -7,6 +7,7 @@ import { isDateRecent } from "../utils/isDateRecent";
 const parser = new Parser();
 
 type Post = {
+  user: string;
   title: string;
   link: string;
   date: string;
@@ -35,17 +36,22 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 function getNotionPosts(): Post[] {
-  return notionPosts.map((post) => {
+  return notionPosts.flatMap((post) => {
     const user = users.find((user) => user.name === post.user);
 
+    if (user == null) {
+      return [];
+    }
+
     return {
+      user: user.name,
       title: post.title,
       link: post.link,
       date: post.date,
       isRecentPost: post.date ? isDateRecent({ date: post.date, days: 7 }) : false,
       channel: {
-        title: user?.name ?? post.user,
-        link: user?.feedUrl ?? "unknown",
+        title: user.name,
+        link: user.feedUrl,
         description: `${post.user} Notion`,
       },
     };
@@ -53,14 +59,13 @@ function getNotionPosts(): Post[] {
 }
 
 export async function fetchRssFeedPosts(): Promise<Post[]> {
-  const feedUrls = users.map((user) => user.feedUrl);
-
   const itemsSettledResult = await Promise.allSettled(
-    feedUrls.map(async (feedUrl) => {
-      const parsed = await parser.parseURL(feedUrl);
+    users.map(async (user) => {
+      const parsed = await parser.parseURL(user.feedUrl);
 
       return parsed.items.map((item) => ({
         ...item,
+        user: user.name,
         channel: {
           title: parsed.title ?? "unknown",
           link: parsed.link ?? "unknown",
