@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components'
 import { Profile } from '../components/Profile.tsx';
 import { users } from "../data/user";
 import { getUserProfileImageUrl, getUserBlogImageUrl } from "../modules/profile";
+import '../styles/tailwind.css';
 
 const posts = await getPosts();
 const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
@@ -67,7 +68,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
       <section
         class="fixed z-10 p-4 justify-between max-w-screen-sm w-full m-auto items-center flex bg-white border-b border-x border-gray-300 backdrop-blur-md bg-white/80"
       >
-        <h1 class="text-lg font-bold">Vaco Feed</h1>
+        <h1 class="text-lg font-extrabold font-condensed">Vaco Feed</h1>
         <a
           href={NOTION_UPLOAD_REQUEST_PAGE}
           target="_blank"
@@ -101,21 +102,13 @@ const NOTION_UPLOAD_REQUEST_PAGE =
           })
         }
       </section>
-      <section class="flex justify-end p-4 gap-2 text-sm bg-white border-x border-gray-300">
+      <section class="flex justify-end p-4 gap-4 text-sm bg-white border-x border-gray-300">
         <a
           href="https://github.com/oddmj/vaco-feeds"
           class="flex gap-1 items-center"
         >
           <Icon name="mingcute:github-fill" />
-          github
-        </a>
-        <a
-          href="mailto:text@mail.com"
-          target="_blank"
-          class="flex gap-1 items-center"
-        >
-          <Icon name="mingcute:mail-line" />
-          contact
+          Github
         </a>
         <span>© 2024 team blahblah</span>
       </section>
