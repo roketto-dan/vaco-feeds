@@ -5,6 +5,8 @@ import { Profile } from '../components/Profile.tsx';
 import { users } from "../data/user";
 import { getUserProfileImageUrl, getUserBlogImageUrl } from "../modules/profile";
 import '../styles/tailwind.css';
+import { formatDistanceToNowStrict } from "date-fns";
+import { ko as koLocale } from "date-fns/locale/ko";
 
 const posts = await getPosts();
 const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
@@ -96,7 +98,9 @@ const NOTION_UPLOAD_REQUEST_PAGE =
                   </div>
                   <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
                 </div>
-                <span class="text-sm">{post.date}</span>
+                <time datetime={new Date(post.date).toISOString()} class="text-sm">
+                  {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
+                </time>
               </div>
             );
           })
