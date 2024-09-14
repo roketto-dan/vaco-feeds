@@ -22,10 +22,10 @@ type Post = {
 export async function getPosts(): Promise<Post[]> {
   const rssFeedPosts = await fetchRssFeedPosts();
   const notionPosts = getNotionPosts();
-  const posts = [
-    ...rssFeedPosts,
-    ...notionPosts,
-  ];
+  const posts = [...rssFeedPosts, ...notionPosts].map((post) => ({
+    ...post,
+    link: decodeURIComponent(post.link),
+  }));
 
   return posts.sort((a, b) => {
     if (a.date === undefined) return 1;

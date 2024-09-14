@@ -90,7 +90,8 @@ const NOTION_UPLOAD_REQUEST_PAGE =
                     <a
                       href={post.link}
                       target="_blank"
-                      class="post_url flex gap-2 justify-between"
+                      class="flex gap-2 justify-between"
+                      data-post-url={post.link}
                     >
                       <span class="text-lg font-medium flex-grow hover:underline underline-offset-4 decoration-2 decoration-teal-600">{post.title}</span>
                     </a>
