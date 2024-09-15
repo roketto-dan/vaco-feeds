@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { users, type User } from "../data/user";
 
 type ProfileProps = {
@@ -27,7 +27,9 @@ export function Profile(props: ProfileProps) {
     setStatus("close");
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     setStatus((status) => {
       switch(status) {
         case "close":

@@ -82,20 +82,20 @@ const NOTION_UPLOAD_REQUEST_PAGE =
       </section>
       <section class="flex flex-col bg-white pt-16 border border-gray-300 divide-y divide-solid">
         {
-          posts.map((post) => {
-            return (
-              <div class="flex gap-2 justify-between p-4">
+          posts.map((post) => (
+            <a
+              href={post.link}
+              target="_blank"
+              class="group"
+              data-post-url={post.link}
+            >
+              <div class="flex justify-between p-4">
                 <div class="flex flex-col gap-2">
                   <div class="flex flex-wrap gap-2 items-start">
-                    <a
-                      href={post.link}
-                      target="_blank"
-                      class="flex gap-2 justify-between"
-                      data-post-url={post.link}
-                    >
-                      <span class="text-lg font-medium flex-grow hover:underline underline-offset-4 decoration-2 decoration-teal-600">{post.title}</span>
-                    </a>
-                    {post.isRecentPost && <span class="bg-teal-600 h-1.5 w-1.5 rounded-full" />}
+                    <span class="text-lg font-medium flex-grow group-hover:underline underline-offset-4 decoration-2 decoration-teal-600">{post.title}</span>
+                    {post.isRecentPost && (
+                      <span class="bg-teal-600 h-1.5 w-1.5 rounded-full" />
+                    )}
                   </div>
                   <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
                 </div>
@@ -103,8 +103,8 @@ const NOTION_UPLOAD_REQUEST_PAGE =
                   {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
                 </time>
               </div>
-            );
-          })
+            </a>
+          ))
         }
       </section>
       <section class="flex justify-end p-4 gap-4 text-sm bg-white border-x border-gray-300">
