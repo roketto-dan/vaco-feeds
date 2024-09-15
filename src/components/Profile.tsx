@@ -1,5 +1,6 @@
 import { useState, type MouseEvent } from "react";
 import { users, type User } from "../data/user";
+import useScrollContainerRef from "../hooks/useScrollContainerRef";
 
 type ProfileProps = {
   userName: User['name'];
@@ -11,6 +12,18 @@ export function Profile(props: ProfileProps) {
   const { userName, userAvatarUrl, blogAvatarUrl } = props;
 
   const [status, setStatus] = useState<"close" | "hover" | "open">("close");
+
+  const handleScrollContainerRef = useScrollContainerRef((element) => {
+    const handleScrollContainerWheel = () => {
+      setStatus("close");
+    };
+
+    element?.addEventListener("touchmove", handleScrollContainerWheel);
+
+    return () => {
+      element?.removeEventListener("touchmove", handleScrollContainerWheel);
+    };
+  }, []);
 
   const user = users.find((user) => user.name === userName);
 
@@ -31,24 +44,12 @@ export function Profile(props: ProfileProps) {
     event.preventDefault();
 
     setStatus((status) => {
-      switch(status) {
-        case "close":
-          return "open";
-        case "hover":
-          return "hover";
-        case "open":
-          return "close";
-      }
+      return status === "close" ? "open" : status;
     });
-    setTimeout(() => {
-      setStatus((status) => {
-        return status === "open" ? "close" : status;
-      });
-    }, 1000 * 3);
   };
 
   return (
-    <div className="relative" onMouseEnter={handleProfileEnter} onMouseLeave={handleProfileLeave}>
+    <div ref={handleScrollContainerRef} className="relative" onMouseEnter={handleProfileEnter} onMouseLeave={handleProfileLeave}>
       <button className="flex items-center gap-1 text-sm text-gray-700" onClick={handleButtonClick}>
         {userAvatarUrl != null && (
           <img src={userAvatarUrl} alt={`${user?.name ?? userName} Profile Image`} className="w-4 h-4 rounded-full" />
