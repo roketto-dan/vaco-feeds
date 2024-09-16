@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.3",
@@ -20,8 +21,11 @@
     "astro-icon": "^1.1.1",
     "axios": "^1.7.7",
     "date-fns": "^3.6.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "metascraper": "^5.45.23",
     "metascraper-image": "^5.45.22",
+    "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rss-parser": "^3.13.0",
@@ -30,5 +34,8 @@
   },
   "engines": {
     "node": "20"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
