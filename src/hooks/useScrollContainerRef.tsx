@@ -1,8 +1,19 @@
-import { useCallback, useEffect, useRef, type DependencyList, type RefCallback } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  type DependencyList,
+  type RefCallback,
+} from "react";
 
-type UseScrollContainerRefHandler = (element: HTMLElement | null) => void | (() => void);
+type UseScrollContainerRefHandler = (
+  element: HTMLElement | null,
+) => void | (() => void);
 
-export default function useScrollContainerRef(handler: UseScrollContainerRefHandler, deps: DependencyList = []): RefCallback<HTMLElement>  {
+export default function useScrollContainerRef(
+  handler: UseScrollContainerRefHandler,
+  deps: DependencyList = [],
+): RefCallback<HTMLElement> {
   const cleanUpRef = useRef<ReturnType<UseScrollContainerRefHandler>>();
 
   useEffect(() => {
@@ -25,11 +36,15 @@ function findScrollContainer(element: HTMLElement | null): HTMLElement | null {
 
   while (parent) {
     const { overflow } = window.getComputedStyle(parent);
-    if (overflow.split(' ').every(overflow => overflow === 'auto' || overflow === 'scroll')) {
+    if (
+      overflow
+        .split(" ")
+        .every((overflow) => overflow === "auto" || overflow === "scroll")
+    ) {
       return parent;
     }
     parent = parent.parentElement;
   }
 
   return document.documentElement;
-};
+}

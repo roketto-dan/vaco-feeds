@@ -13,16 +13,19 @@ type GitHubGetUserResponse = {
   company: string | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export async function getGitHubUser(userName: string) {
   const clientId = import.meta.env.PUBLIC_GITHUB_CLIENT_ID;
   const clientSecret = import.meta.env.PUBLIC_GITHUB_SECRET_ID;
 
-  return request<GitHubGetUserResponse>(`https://api.github.com/users/${userName}?client_id=${clientId}&client_secret=${clientSecret}`, {
-    headers: {
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
+  return request<GitHubGetUserResponse>(
+    `https://api.github.com/users/${userName}?client_id=${clientId}&client_secret=${clientSecret}`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
     },
-  });
+  );
 }

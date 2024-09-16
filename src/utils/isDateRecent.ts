@@ -1,4 +1,10 @@
-export const isDateRecent = ({ date, days }: { date: string, days: number }): boolean => {
+export const isDateRecent = ({
+  date,
+  days,
+}: {
+  date: string;
+  days: number;
+}): boolean => {
   if (!date) return false;
 
   const postDateInMs = new Date(date).getTime();

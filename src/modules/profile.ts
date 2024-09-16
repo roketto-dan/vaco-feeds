@@ -2,7 +2,7 @@ import { getGitHubUser } from "../clients/github";
 import { users } from "../data/user";
 
 export async function getUserBlogImageUrl(
-  userName: string
+  userName: string,
 ): Promise<string | null> {
   const user = users.find((user) => user.name === userName);
 
@@ -19,7 +19,7 @@ export async function getUserBlogImageUrl(
 }
 
 export async function getUserProfileImageUrl(
-  userName: string
+  userName: string,
 ): Promise<string | null> {
   const user = users.find((user) => user.name === userName);
 
@@ -36,12 +36,12 @@ export async function getUserProfileImageUrl(
 }
 
 async function getGitHubProfileImageUrl(
-  userName: string
+  userName: string,
 ): Promise<string | null> {
   try {
     const response = await getGitHubUser(userName);
     return response.avatar_url;
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     return null;
   }
