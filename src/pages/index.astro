@@ -89,21 +89,24 @@ const NOTION_UPLOAD_REQUEST_PAGE =
               class="group"
               data-post-url={post.link}
             >
-              <div class="flex justify-between p-4">
-                <div class="flex flex-col gap-2 items-start">
-                  <div class="flex flex-wrap gap-2 items-start">
-                    <span class="text-lg font-medium flex-grow group-[:hover:not(:has(.profile:hover))]:underline underline-offset-4 decoration-2 decoration-teal-600">{post.title}</span>
-                    {post.isRecentPost && (
-                      <span class="bg-teal-600 h-1.5 w-1.5 rounded-full" />
-                    )}
+              <div class="flex flex-col gap-2 p-4">
+                <img src={post.image}/>
+                <div class="flex justify-between">
+                  <div class="flex flex-col gap-2 items-start">
+                    <div class="flex flex-wrap gap-2 items-start">
+                      <span class="text-lg font-medium flex-grow group-[:hover:not(:has(.profile:hover))]:underline underline-offset-4 decoration-2 decoration-teal-600">{post.title}</span>
+                      {post.isRecentPost && (
+                        <span class="bg-teal-600 h-1.5 w-1.5 rounded-full" />
+                      )}
+                    </div>
+                    <div class="profile">
+                      <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
+                    </div>
                   </div>
-                  <div class="profile">
-                    <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
-                  </div>
+                  <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap">
+                    {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
+                  </time>
                 </div>
-                <time datetime={new Date(post.date).toISOString()} class="text-sm">
-                  {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
-                </time>
               </div>
             </a>
           ))

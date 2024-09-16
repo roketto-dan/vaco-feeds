@@ -1,27 +1,22 @@
-import Parser from "rss-parser";
 import { format } from "date-fns";
-import { users } from "../data/user";
+import { users, type User } from "../data/user";
 import { notionPosts } from "../data/notionPost";
 import { isDateRecent } from "../utils/isDateRecent";
-
-const parser = new Parser();
+import { getRssFeed } from "./rss";
+import { getImage } from "./metadata";
 
 type Post = {
   user: string;
   title: string;
   link: string;
+  image?: string;
   date: string;
   isRecentPost: boolean;
-  channel: {
-    title: string;
-    link: string;
-    description: string;
-  };
 };
 
 export async function getPosts(): Promise<Post[]> {
-  const rssFeedPosts = await fetchRssFeedPosts();
-  const notionPosts = getNotionPosts();
+  const rssFeedPosts = await getRssFeedPosts();
+  const notionPosts = await getNotionPosts();
   const posts = [...rssFeedPosts, ...notionPosts].map((post) => ({
     ...post,
     link: decodeURIComponent(post.link),
@@ -35,63 +30,71 @@ export async function getPosts(): Promise<Post[]> {
   });
 }
 
-function getNotionPosts(): Post[] {
-  return notionPosts.flatMap((post) => {
-    const user = users.find((user) => user.name === post.user);
+async function getNotionPosts(): Promise<Post[]> {
+  const postPromises = notionPosts
+    .map<Promise<Post | null>>(async (post) => {
+      const user = users.find((user) => user.name === post.user);
 
-    if (user == null) {
-      return [];
+      if (user == null) {
+        return null;
+      }
+
+      let image;
+      try {
+        image = await getImage(post.link);
+      } catch (e) {
+        console.error(e);
+      }
+
+      return {
+        user: user.name,
+        title: post.title,
+        link: decodeURIComponent(post.link),
+        image,
+        date: post.date,
+        isRecentPost: post.date
+          ? isDateRecent({ date: post.date, days: 7 })
+          : false,
+      };
+    })
+    .filter((post): post is Promise<Post> => post !== null);
+
+  const posts = (await Promise.allSettled(postPromises))
+    .filter((result) => result.status === "fulfilled")
+    .map(({ value }) => value);
+
+  return posts;
+}
+
+async function getRssFeedPosts(): Promise<Post[]> {
+  const posts = (await Promise.allSettled(users.map(getPostsFromRssFeed)))
+    .filter((result) => result.status === "fulfilled")
+    .flatMap(({ value }) => value);
+
+  return posts;
+}
+
+async function getPostsFromRssFeed(user: User): Promise<Post[]> {
+  const feed = await getRssFeed(user.feedUrl);
+  const posts = feed.items.map<Promise<Post>>(async (item) => {
+    let image;
+    try {
+      image = await getImage(item.link!);
+    } catch (e) {
+      console.error(e);
     }
 
     return {
       user: user.name,
-      title: post.title,
-      link: post.link,
-      date: post.date,
-      isRecentPost: post.date ? isDateRecent({ date: post.date, days: 7 }) : false,
-      channel: {
-        title: user.name,
-        link: user.feedUrl,
-        description: `${post.user} Notion`,
-      },
+      title: item.title ?? "",
+      link: item.link ?? "",
+      image,
+      date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "",
+      isRecentPost: item.pubDate
+        ? isDateRecent({ date: item.pubDate, days: 7 })
+        : false,
     };
   });
-}
 
-export async function fetchRssFeedPosts(): Promise<Post[]> {
-  const itemsSettledResult = await Promise.allSettled(
-    users.map(async (user) => {
-      const parsed = await parser.parseURL(user.feedUrl);
-
-      return parsed.items.map((item) => ({
-        ...item,
-        user: user.name,
-        channel: {
-          title: parsed.title ?? "unknown",
-          link: parsed.link ?? "unknown",
-          description: parsed.description ?? "unknown",
-        },
-      }));
-    })
-  );
-
-  const posts = itemsSettledResult
-    .map((result) => {
-      if (result.status === "rejected") {
-        console.error(result.reason);
-        return [];
-      }
-
-      return result.value;
-    })
-    .flat()
-    .map((item) => ({
-      ...item,
-      title: item.title ?? "unknown",
-      link: item.link ?? "",
-      date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "unknown",
-      isRecentPost: item.pubDate ? isDateRecent({ date: item.pubDate, days: 7 }) : false,
-    }));
-
-  return posts;
+  return Promise.all(posts);
 }

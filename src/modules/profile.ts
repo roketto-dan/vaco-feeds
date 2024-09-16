@@ -41,7 +41,8 @@ async function getGitHubProfileImageUrl(
   try {
     const response = await getGitHubUser(userName);
     return response.avatar_url;
-  } catch {
+  } catch(e) {
+    console.error(e);
     return null;
   }
 }
