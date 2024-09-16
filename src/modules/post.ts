@@ -39,18 +39,11 @@ async function getNotionPosts(): Promise<Post[]> {
         return null;
       }
 
-      let image;
-      try {
-        image = await getImage(post.link);
-      } catch (e) {
-        console.error(e);
-      }
-
       return {
         user: user.name,
         title: post.title,
         link: decodeURIComponent(post.link),
-        image,
+        image: await getImage(post.link),
         date: post.date,
         isRecentPost: post.date
           ? isDateRecent({ date: post.date, days: 7 })
@@ -77,18 +70,11 @@ async function getRssFeedPosts(): Promise<Post[]> {
 async function getPostsFromRssFeed(user: User): Promise<Post[]> {
   const feed = await getRssFeed(user.feedUrl);
   const posts = feed.items.map<Promise<Post>>(async (item) => {
-    let image;
-    try {
-      image = await getImage(item.link!);
-    } catch (e) {
-      console.error(e);
-    }
-
     return {
       user: user.name,
       title: item.title ?? "",
       link: item.link ?? "",
-      image,
+      image: await getImage(item.link!),
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "",
       isRecentPost: item.pubDate
         ? isDateRecent({ date: item.pubDate, days: 7 })
