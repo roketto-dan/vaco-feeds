@@ -95,7 +95,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
                       <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
                     </div>
                   </div>
-                  <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap">
+                  <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap pt-1">
                     {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
                   </time>
                 </div>
