@@ -27,4 +27,10 @@ export const users: User[] = [
     feedUrl: "https://odd.voyage/rss.xml",
     github: "oddmj",
   },
+  {
+    name: "이영교",
+    blog: "https://medium.com/@younggyo.lee.",
+    feedUrl: "https://medium.com/feed/@younggyo.lee.",
+    github: "younggyolee",
+  },
 ];
