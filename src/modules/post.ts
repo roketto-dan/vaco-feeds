@@ -22,12 +22,30 @@ export async function getPosts(): Promise<Post[]> {
     link: decodeURIComponent(post.link),
   }));
 
-  return posts.sort((a, b) => {
-    if (a.date === undefined) return 1;
-    if (b.date === undefined) return -1;
+  return posts
+    .reduce<[Post[], Post[]]>(
+      (acc, post) => {
+        const user = users.find((user) => user.name === post.user);
 
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+        if (user == null) {
+          return acc;
+        }
+
+        return user.joinDate != null &&
+          isDateRecent({ date: user.joinDate, days: 7 })
+          ? [[...acc[0], post], acc[1]]
+          : [acc[0], [...acc[1], post]];
+      },
+      [[], []],
+    )
+    .flatMap((posts) =>
+      posts.sort((a, b) => {
+        if (a.date === undefined) return 1;
+        if (b.date === undefined) return -1;
+
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }),
+    );
 }
 
 async function getNotionPosts(): Promise<Post[]> {

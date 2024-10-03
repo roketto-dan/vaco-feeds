@@ -6,6 +6,7 @@ export type User = {
   linkedin?: string;
   email?: string;
   slack?: string;
+  joinDate?: string;
 };
 
 export const users: User[] = [
@@ -32,5 +33,6 @@ export const users: User[] = [
     blog: "https://medium.com/@younggyo.lee.",
     feedUrl: "https://medium.com/feed/@younggyo.lee.",
     github: "younggyolee",
+    joinDate: "2024.10.03",
   },
 ];
