@@ -1,6 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import { users, type User } from "../data/user";
 import useScrollContainerRef from "../hooks/useScrollContainerRef";
+import { isDateRecent } from "../utils/isDateRecent";
 
 type ProfileProps = {
   userName: User["name"];
@@ -67,6 +68,9 @@ export function Profile(props: ProfileProps) {
           />
         )}
         {user?.name ?? userName}
+        {isDateRecent({ date: user?.joinDate ?? "", days: 7 }) && (
+          <span className="inline-block bg-teal-600 h-1.5 w-1.5 rounded-full mb-2" />
+        )}
       </button>
       <div
         className={`absolute top-full left-0 pt-1.5 z-10 ${user != null && status === "open" ? "block" : "hidden"}`}
