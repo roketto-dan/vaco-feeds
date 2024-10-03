@@ -33,6 +33,6 @@ export const users: User[] = [
     blog: "https://medium.com/@younggyo.lee.",
     feedUrl: "https://medium.com/feed/@younggyo.lee.",
     github: "younggyolee",
-    joinDate: "2024.10.03",
+    joinDate: "2024-10-03",
   },
 ];
