@@ -7,6 +7,7 @@ import '../styles/tailwind.css';
 import { formatDistanceToNowStrict } from "date-fns";
 import { ko as koLocale } from "date-fns/locale/ko";
 import { posts } from "../modules/post";
+import { Image } from 'astro:assets';
 
 const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
   const urls = await Promise.all(users.map(user => getUserProfileImageUrl(user.name)));
@@ -81,6 +82,7 @@ const NOTION_UPLOAD_REQUEST_PAGE =
               data-post-url={post.link}
             >
               <div class="flex flex-col gap-4 p-4">
+                <Image class="aspect-video object-cover" src={`/thumbnails/${post.id}`} alt=`${post.title} post image` width={606} height={341} />
                 <div class="flex justify-between">
                   <div class="flex flex-col gap-2">
                     <h2 class="text-lg font-medium inline-block pr-[1.25em] group-[:hover:not(:has(.profile:hover))]:underline underline-offset-4 decoration-2 decoration-teal-600">

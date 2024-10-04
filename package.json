@@ -25,6 +25,7 @@
     "lint-staged": "^15.2.10",
     "metascraper": "^5.45.23",
     "metascraper-image": "^5.45.22",
+    "mime": "^4.0.4",
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
