@@ -3,13 +3,11 @@ import { users, type User } from "../data/user";
 import { notionPosts } from "../data/notionPost";
 import { isDateRecent } from "../utils/isDateRecent";
 import { getRssFeed } from "./rss";
-import { getImage } from "./metadata";
 
 type Post = {
   user: string;
   title: string;
   link: string;
-  image?: string;
   date: string;
   isRecentPost: boolean;
 };
@@ -61,7 +59,6 @@ async function getNotionPosts(): Promise<Post[]> {
         user: user.name,
         title: post.title,
         link: decodeURIComponent(post.link),
-        image: await getImage(post.link),
         date: post.date,
         isRecentPost: post.date
           ? isDateRecent({ date: post.date, days: 7 })
@@ -92,7 +89,6 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
       user: user.name,
       title: item.title ?? "",
       link: item.link ?? "",
-      image: await getImage(item.link!),
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "",
       isRecentPost: item.pubDate
         ? isDateRecent({ date: item.pubDate, days: 7 })
