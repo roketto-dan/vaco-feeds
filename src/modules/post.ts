@@ -3,8 +3,10 @@ import { users, type User } from "../data/user";
 import { notionPosts } from "../data/notionPost";
 import { isDateRecent } from "../utils/isDateRecent";
 import { getRssFeed } from "./rss";
+import { v4 as uuidv4 } from "uuid";
 
 type Post = {
+  id: string;
   user: string;
   title: string;
   link: string;
@@ -12,7 +14,7 @@ type Post = {
   isRecentPost: boolean;
 };
 
-export async function getPosts(): Promise<Post[]> {
+async function getPosts(): Promise<Post[]> {
   const rssFeedPosts = await getRssFeedPosts();
   const notionPosts = await getNotionPosts();
   const posts = [...rssFeedPosts, ...notionPosts].map((post) => ({
@@ -57,6 +59,7 @@ async function getNotionPosts(): Promise<Post[]> {
 
       return {
         user: user.name,
+        id: uuidv4(),
         title: post.title,
         link: decodeURIComponent(post.link),
         date: post.date,
@@ -87,6 +90,7 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
   const posts = feed.items.map<Promise<Post>>(async (item) => {
     return {
       user: user.name,
+      id: uuidv4(),
       title: item.title ?? "",
       link: item.link ?? "",
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "",
@@ -98,3 +102,5 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
 
   return Promise.all(posts);
 }
+
+export const posts = await getPosts();

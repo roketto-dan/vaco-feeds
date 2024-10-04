@@ -1,5 +1,4 @@
 ---
-import { getPosts } from "../modules/post";
 import { Icon } from 'astro-icon/components'
 import { Profile } from '../components/Profile.tsx';
 import { users } from "../data/user";
@@ -7,8 +6,8 @@ import { getUserProfileImageUrl, getUserBlogImageUrl } from "../modules/profile"
 import '../styles/tailwind.css';
 import { formatDistanceToNowStrict } from "date-fns";
 import { ko as koLocale } from "date-fns/locale/ko";
+import { posts } from "../modules/post";
 
-const posts = await getPosts();
 const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
   const urls = await Promise.all(users.map(user => getUserProfileImageUrl(user.name)));
   return users.reduce((acc, user, index) => ({
