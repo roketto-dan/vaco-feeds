@@ -3,18 +3,18 @@ import { users, type User } from "../data/user";
 import { notionPosts } from "../data/notionPost";
 import { isDateRecent } from "../utils/isDateRecent";
 import { getRssFeed } from "./rss";
-import { getImage } from "./metadata";
+import { v4 as uuidv4 } from "uuid";
 
 type Post = {
+  id: string;
   user: string;
   title: string;
   link: string;
-  image?: string;
   date: string;
   isRecentPost: boolean;
 };
 
-export async function getPosts(): Promise<Post[]> {
+async function getPosts(): Promise<Post[]> {
   const rssFeedPosts = await getRssFeedPosts();
   const notionPosts = await getNotionPosts();
   const posts = [...rssFeedPosts, ...notionPosts].map((post) => ({
@@ -59,9 +59,9 @@ async function getNotionPosts(): Promise<Post[]> {
 
       return {
         user: user.name,
+        id: uuidv4(),
         title: post.title,
         link: decodeURIComponent(post.link),
-        image: await getImage(post.link),
         date: post.date,
         isRecentPost: post.date
           ? isDateRecent({ date: post.date, days: 7 })
@@ -90,9 +90,9 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
   const posts = feed.items.map<Promise<Post>>(async (item) => {
     return {
       user: user.name,
+      id: uuidv4(),
       title: item.title ?? "",
       link: item.link ?? "",
-      image: await getImage(item.link!),
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "",
       isRecentPost: item.pubDate
         ? isDateRecent({ date: item.pubDate, days: 7 })
@@ -102,3 +102,5 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
 
   return Promise.all(posts);
 }
+
+export const posts = await getPosts();
