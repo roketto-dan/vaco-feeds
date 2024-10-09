@@ -22,30 +22,30 @@ async function getPosts(): Promise<Post[]> {
     link: decodeURIComponent(post.link),
   }));
 
-  return posts
-    .reduce<[Post[], Post[]]>(
-      (acc, post) => {
-        const user = users.find((user) => user.name === post.user);
-
-        if (user == null) {
-          return acc;
-        }
-
-        return user.joinDate != null &&
-          isDateRecent({ date: user.joinDate, days: 7 })
-          ? [[...acc[0], post], acc[1]]
-          : [acc[0], [...acc[1], post]];
-      },
-      [[], []],
+  const resentUserPosts = users
+    .filter(
+      (user) =>
+        user.joinDate != null && isDateRecent({ date: user.joinDate, days: 7 }),
     )
-    .flatMap((posts) =>
-      posts.sort((a, b) => {
-        if (a.date === undefined) return 1;
-        if (b.date === undefined) return -1;
+    .sort((a, b) => {
+      if (a.joinDate === undefined) return 1;
+      if (b.joinDate === undefined) return -1;
 
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }),
+      return new Date(b.joinDate).getTime() - new Date(a.joinDate).getTime();
+    })
+    .flatMap((user) =>
+      posts.filter((post) => post.user === user.name).slice(0, 3),
     );
+  const recentPosts = users
+    .flatMap((user) => posts.filter((post) => post.user === user.name).slice(3))
+    .sort((a, b) => {
+      if (a.date === undefined) return 1;
+      if (b.date === undefined) return -1;
+
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+
+  return [...resentUserPosts, ...recentPosts];
 }
 
 async function getNotionPosts(): Promise<Post[]> {
