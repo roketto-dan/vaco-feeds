@@ -16,7 +16,7 @@ type Post = {
 
 async function getPosts(): Promise<Post[]> {
   const rssFeedPosts = await getRssFeedPosts();
-  const notionPosts = await getNotionPosts();
+  const notionPosts = getNotionPosts();
   const posts = [...rssFeedPosts, ...notionPosts].map((post) => ({
     ...post,
     link: decodeURIComponent(post.link),
@@ -51,9 +51,9 @@ async function getPosts(): Promise<Post[]> {
   return [...resentUserPosts, ...recentPosts];
 }
 
-async function getNotionPosts(): Promise<Post[]> {
-  const postPromises = notionPosts
-    .map<Promise<Post | null>>(async (post) => {
+function getNotionPosts(): Post[] {
+  const posts = notionPosts
+    .map<Post | null>((post) => {
       const user = users.find((user) => user.name === post.user);
 
       if (user == null) {
@@ -71,11 +71,7 @@ async function getNotionPosts(): Promise<Post[]> {
           : false,
       };
     })
-    .filter((post): post is Promise<Post> => post !== null);
-
-  const posts = (await Promise.allSettled(postPromises))
-    .filter((result) => result.status === "fulfilled")
-    .map(({ value }) => value);
+    .filter((post): post is Post => post !== null);
 
   return posts;
 }
