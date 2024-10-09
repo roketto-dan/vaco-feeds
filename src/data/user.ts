@@ -35,4 +35,11 @@ export const users: User[] = [
     github: "younggyolee",
     joinDate: "2024-10-03",
   },
+  {
+    name: "정주형",
+    blog: "https://medium.com/@juhyoung.jung1992",
+    feedUrl: "https://medium.com/@juhyoung.jung1992/feed",
+    github: "patissier-boulanger",
+    joinDate: "2024-10-09",
+  },
 ];
