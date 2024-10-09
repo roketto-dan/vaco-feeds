@@ -36,8 +36,11 @@ async function getPosts(): Promise<Post[]> {
     .flatMap((user) =>
       posts.filter((post) => post.user === user.name).slice(0, 3),
     );
-  const recentPosts = users
-    .flatMap((user) => posts.filter((post) => post.user === user.name).slice(3))
+
+  const resentUserPostSet = new Set(resentUserPosts);
+
+  const recentPosts = posts
+    .filter((post) => !resentUserPostSet.has(post))
     .sort((a, b) => {
       if (a.date === undefined) return 1;
       if (b.date === undefined) return -1;
