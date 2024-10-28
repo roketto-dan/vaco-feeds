@@ -42,4 +42,11 @@ export const users: User[] = [
     github: "patissier-boulanger",
     joinDate: "2024-10-09",
   },
+  {
+    name: "홍유진",
+    blog: "https://medium.com/@howyoujini",
+    feedUrl: "https://medium.com/@howyoujini/feed",
+    github: "howyoujini",
+    joinDate: "2024-10-28",
+  },
 ];
