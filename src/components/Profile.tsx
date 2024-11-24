@@ -41,14 +41,6 @@ export function Profile(props: ProfileProps) {
     setStatus("close");
   };
 
-  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setStatus((status) => {
-      return status === "close" ? "open" : status;
-    });
-  };
-
   return (
     <div
       ref={handleScrollContainerRef}
@@ -56,9 +48,9 @@ export function Profile(props: ProfileProps) {
       onMouseEnter={handleProfileEnter}
       onMouseLeave={handleProfileLeave}
     >
-      <button
+      <a
         className="flex items-center gap-1 text-sm text-gray-700"
-        onClick={handleButtonClick}
+        href={`/${user?.github}`}
       >
         {userAvatarUrl != null && (
           <img
@@ -71,9 +63,10 @@ export function Profile(props: ProfileProps) {
         {isDateRecent({ date: user?.joinDate ?? "", days: 7 }) && (
           <span className="inline-block bg-teal-600 h-1.5 w-1.5 rounded-full mb-2" />
         )}
-      </button>
+      </a>
       <div
-        className={`absolute top-full left-0 pt-1.5 z-10 ${user != null && status === "open" ? "block" : "hidden"}`}
+        className={`absolute top-full left-0 pt-1.5 z-10 select-none ${user != null && status === "open" ? "block" : "hidden"}`}
+        onClick={(event) => !event.bubbles && event.preventDefault()}
       >
         <section
           className="flex flex-col gap-4 p-4 w-52 rounded bg-white"
@@ -90,12 +83,12 @@ export function Profile(props: ProfileProps) {
                 className="w-8 h-8 rounded-full"
               />
             )}
-            <p>
+            <a href={`/${user?.github}`}>
               <span className="text-md font-bold">{user?.name} </span>
               {user?.github != null && (
                 <span className="text-sm text-gray-700">{user.github}</span>
               )}
-            </p>
+            </a>
           </div>
           <div className="flex flex-col gap-2">
             {user?.blog != null && (
