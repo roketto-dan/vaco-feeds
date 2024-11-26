@@ -49,4 +49,11 @@ export const users: User[] = [
     github: "howyoujini",
     joinDate: "2024-10-28",
   },
+  {
+    name: "송규경",
+    blog: "https://medium.com/@howyoujini",
+    feedUrl: "https://www.ssongq.com/rss.xml",
+    github: "SsongQ-92",
+    joinDate: "2024-11-26",
+  },
 ];
