@@ -51,7 +51,7 @@ export const users: User[] = [
   },
   {
     name: "송규경",
-    blog: "https://medium.com/@howyoujini",
+    blog: "https://www.ssongq.com",
     feedUrl: "https://www.ssongq.com/rss.xml",
     github: "SsongQ-92",
     joinDate: "2024-11-26",
