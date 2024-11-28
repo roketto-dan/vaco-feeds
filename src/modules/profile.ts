@@ -18,6 +18,8 @@ export async function getUserBlogImageUrl(
   }
 }
 
+const cache = new Map<string, string | null>();
+
 export async function getUserProfileImageUrl(
   userName: string,
 ): Promise<string | null> {
@@ -27,12 +29,23 @@ export async function getUserProfileImageUrl(
     return null;
   }
 
-  switch (true) {
-    case user.github != null:
-      return getGitHubProfileImageUrl(user.github);
-    default:
-      return null;
+  if (cache.has(userName) && cache.get(userName) != null) {
+    return cache.get(userName) ?? null;
   }
+
+  const userAvatarUrl = await (async () => {
+    switch (true) {
+      case user.github != null:
+        return getGitHubProfileImageUrl(user.github);
+      default:
+        return null;
+    }
+  })();
+  if (userAvatarUrl != null) {
+    cache.set(userName, userAvatarUrl);
+  }
+
+  return userAvatarUrl;
 }
 
 async function getGitHubProfileImageUrl(

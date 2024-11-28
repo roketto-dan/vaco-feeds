@@ -54,11 +54,12 @@ export function Profile(props: ProfileProps) {
       >
         {userAvatarUrl != null && (
           <img
-            src={`/avatars/${user?.github}.webp`}
+            src={userAvatarUrl}
             alt={`${user?.name ?? userName} Profile Image`}
             className="w-4 h-4 rounded-full"
             width={16}
             height={16}
+            loading="lazy"
           />
         )}
         {user?.name ?? userName}
@@ -78,13 +79,14 @@ export function Profile(props: ProfileProps) {
           }}
         >
           <div className="flex flex-col gap-2">
-            {user?.github != null && (
+            {userAvatarUrl != null && (
               <img
-                src={`/avatars/${user.github}.webp`}
+                src={userAvatarUrl}
                 alt={`${user?.name} Avatar Image`}
                 className="w-8 h-8 rounded-full"
                 width={32}
                 height={32}
+                loading="lazy"
               />
             )}
             <a href={`/${user?.github}`}>
