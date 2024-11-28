@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 import { users, type User } from "../data/user";
 import useScrollContainerRef from "../hooks/useScrollContainerRef";
 import { isDateRecent } from "../utils/isDateRecent";
@@ -54,9 +54,11 @@ export function Profile(props: ProfileProps) {
       >
         {userAvatarUrl != null && (
           <img
-            src={userAvatarUrl}
+            src={`/avatars/${user?.github}.webp`}
             alt={`${user?.name ?? userName} Profile Image`}
             className="w-4 h-4 rounded-full"
+            width={16}
+            height={16}
           />
         )}
         {user?.name ?? userName}
@@ -76,11 +78,13 @@ export function Profile(props: ProfileProps) {
           }}
         >
           <div className="flex flex-col gap-2">
-            {userAvatarUrl != null && (
+            {user?.github != null && (
               <img
-                src={userAvatarUrl}
+                src={`/avatars/${user.github}.webp`}
                 alt={`${user?.name} Avatar Image`}
                 className="w-8 h-8 rounded-full"
+                width={32}
+                height={32}
               />
             )}
             <a href={`/${user?.github}`}>

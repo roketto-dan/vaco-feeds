@@ -1,10 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { users } from '../data/user';
-import { getUserBlogImageUrl, getUserProfileImageUrl } from '../modules/profile';
+import { getUserBlogImageUrl } from '../modules/profile';
 import PageLayout from './PageLayout.astro';
 import { posts } from '../modules/post';
-import { Image } from 'astro:assets';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ko as koLocale } from "date-fns/locale/ko";
 import '../styles/tailwind.css';
@@ -17,7 +16,6 @@ export function getStaticPaths() {
 
 const { userName } = Astro.params;
 const user = users.find((user) => user.github === userName);
-const profileImageUrl = user != null ? await getUserProfileImageUrl(user.name) : "";
 const blogAvatarUrl = await getUserBlogImageUrl(user?.name ?? '');
 const userPosts = posts.filter((post) => post.user === user?.name);
 ---
@@ -36,7 +34,7 @@ const userPosts = posts.filter((post) => post.user === user?.name);
           </a>
         </section>
         <div class="flex flex-col items-center p-6 pt-24 border-x border-gray-300">
-          <img src={profileImageUrl ?? ""} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
+          <img src={`/avatars/${user.github}.webp`} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
           <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mt-4">{user.name}</h1>
           <h1 class="text-md sm:text-lg text-gray-600 mt-0.5">@{user.github}</h1>
         </div>
@@ -58,7 +56,13 @@ const userPosts = posts.filter((post) => post.user === user?.name);
           {userPosts.map((post) => (
             <li class="hover:bg-zinc-200 p-2 rounded-md">
               <a href={post.link} target="_blank" rel="noopener noreferrer" class="flex flex-col gap-3 sm:flex-row sm:gap-5">
-                <Image class="basis-[230px] shrink-0 aspect-[230/130] object-cover rounded-md w-full sm:w-[230px]" src={`/thumbnails/${post.id}`} alt={`${post.title} post image`} width="230" height="130" />
+                <img
+                  class="basis-[230px] shrink-0 aspect-[230/130] object-cover rounded-md w-full sm:w-[230px]"
+                  src={`/thumbnails/${post.id}.webp`}
+                  alt={`${post.title} post image`}
+                  width="230"
+                  height="130"
+                />
                 <div class="w-full flex flex-col">
                   <time datetime={new Date(post.date).toISOString()} class="text-xs text-nowrap text-gray-500 pt-1">
                     {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
