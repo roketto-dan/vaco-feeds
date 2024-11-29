@@ -3,7 +3,7 @@ import { users, type User } from "../data/user";
 import { notionPosts } from "../data/notionPost";
 import { isDateRecent } from "../utils/isDateRecent";
 import { getRssFeed } from "./rss";
-import { v4 as uuidv4 } from "uuid";
+import slugify from "slugify";
 
 type Post = {
   id: string;
@@ -13,6 +13,13 @@ type Post = {
   date: string;
   isRecentPost: boolean;
 };
+
+function generatePostId(post: { title: string }): string {
+  return slugify(post.title, {
+    remove: /[*+~.,()\[\]'"!?:@]/g,
+    lower: true,
+  }).replace(/\//g, "-");
+}
 
 async function getPosts(): Promise<Post[]> {
   const rssFeedPosts = await getRssFeedPosts();
@@ -62,7 +69,7 @@ function getNotionPosts(): Post[] {
 
       return {
         user: user.name,
-        id: uuidv4(),
+        id: generatePostId(post),
         title: post.title,
         link: decodeURIComponent(post.link),
         date: post.date,
@@ -89,7 +96,7 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
   const posts = feed.items.map<Promise<Post>>(async (item) => {
     return {
       user: user.name,
-      id: uuidv4(),
+      id: generatePostId({ title: item.title ?? "" }),
       title: item.title ?? "",
       link: item.link ?? "",
       date: item.pubDate ? format(item.pubDate, "yyyy.MM.dd.") : "",

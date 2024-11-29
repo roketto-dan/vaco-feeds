@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ request }) => {
       return new Response("Invalid URL", { status: 400 });
     }
 
-    const post = posts.find((post) => post.id === postId);
+    const post = posts.find((post) => encodeURIComponent(post.id) === postId);
     if (post == null) {
       return new Response("Post not found", { status: 404 });
     }
@@ -57,6 +57,6 @@ export const GET: APIRoute = async ({ request }) => {
 
 export async function getStaticPaths() {
   return posts.map((post) => ({
-    params: { postId: `${post.id}.webp` },
+    params: { postId: post.id },
   }));
 }
