@@ -30,5 +30,17 @@ const { title } = Astro.props;
     </script>
     <!-- End Google Tag Manager -->
   </head>
-  <slot />
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-KDGJLWXF"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      />
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <slot />
+  </body>
 </html>
