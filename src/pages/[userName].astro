@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { users } from '../data/user';
-import { getUserBlogImageUrl } from '../modules/profile';
+import { getUserBlogImageUrl, getUserProfileImageUrl } from '../modules/profile';
 import PageLayout from './PageLayout.astro';
 import { posts } from '../modules/post';
 import { formatDistanceToNowStrict } from 'date-fns';
@@ -13,6 +13,14 @@ export function getStaticPaths() {
     params: { userName: user.github },
   }));
 }
+
+const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
+  const urls = await Promise.all(users.map(user => getUserProfileImageUrl(user.name)));
+  return users.reduce((acc, user, index) => ({
+    ...acc,
+    [user.name]: urls[index],
+  }), {});
+})();
 
 const { userName } = Astro.params;
 const user = users.find((user) => user.github === userName);
@@ -34,7 +42,7 @@ const userPosts = posts.filter((post) => post.user === user?.name);
           </a>
         </section>
         <div class="flex flex-col items-center p-6 pt-24 border-x border-gray-300">
-          <img src={`/avatars/${user.github}.webp`} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
+          <img src={userAvatarUrlByUser[user.name]} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
           <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mt-4">{user.name}</h1>
           <h1 class="text-md sm:text-lg text-gray-600 mt-0.5">@{user.github}</h1>
         </div>
