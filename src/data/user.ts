@@ -56,4 +56,11 @@ export const users: User[] = [
     github: "SsongQ-92",
     joinDate: "2024-11-26",
   },
+  {
+    name: "이양래",
+    blog: "https://devrey.blog/",
+    feedUrl: "https://devrey.blog/rss.xml",
+    github: "whoisrey",
+    joinDate: "2024-12-03",
+  },
 ];
