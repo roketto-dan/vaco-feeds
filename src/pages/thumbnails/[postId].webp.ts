@@ -1,20 +1,12 @@
 import sharp from "sharp";
 import axios from "axios";
 import type { APIRoute } from "astro";
-import { isLocalService } from "astro/assets";
-import { getConfiguredImageService } from "astro:assets";
 
 import { posts } from "../../modules/post";
 import { getImage } from "../../modules/metadata";
 
 export const GET: APIRoute = async ({ request }) => {
   try {
-    const imageService = await getConfiguredImageService();
-
-    if (!isLocalService(imageService)) {
-      throw new Error("Internal server error");
-    }
-
     const postId = request.url.split("/").pop()?.replace(".webp", "");
     if (postId == null) {
       return new Response("Invalid URL", { status: 400 });
@@ -36,7 +28,7 @@ export const GET: APIRoute = async ({ request }) => {
 
     const thumbnail = await sharp(response.data)
       .resize(640, 360)
-      .webp({ quality: 80 })
+      .webp()
       .toBuffer();
 
     return new Response(thumbnail, {
