@@ -21,6 +21,12 @@ function generatePostId(post: { title: string }): string {
   }).replace(/\//g, "-");
 }
 
+const sortByRecentDate = (a: Post, b: Post): number => {
+  if (a.date === undefined) return 1;
+  if (b.date === undefined) return -1;
+
+  return new Date(b.date).getTime() - new Date(a.date).getTime();
+};
 async function getPosts(): Promise<Post[]> {
   const rssFeedPosts = await getRssFeedPosts();
   const notionPosts = getNotionPosts();
@@ -41,19 +47,18 @@ async function getPosts(): Promise<Post[]> {
       return new Date(b.joinDate).getTime() - new Date(a.joinDate).getTime();
     })
     .flatMap((user) =>
-      posts.filter((post) => post.user === user.name).slice(0, 3),
-    );
+      posts
+        .sort(sortByRecentDate)
+        .filter((post) => post.user === user.name)
+        .slice(0, 3),
+    )
+    .sort(sortByRecentDate);
 
   const resentUserPostSet = new Set(resentUserPosts);
 
   const recentPosts = posts
     .filter((post) => !resentUserPostSet.has(post))
-    .sort((a, b) => {
-      if (a.date === undefined) return 1;
-      if (b.date === undefined) return -1;
-
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
+    .sort(sortByRecentDate);
 
   return [...resentUserPosts, ...recentPosts];
 }
