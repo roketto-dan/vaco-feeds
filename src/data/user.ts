@@ -63,4 +63,11 @@ export const users: User[] = [
     github: "whoisrey",
     joinDate: "2024-12-03",
   },
+  {
+    name: "이주연",
+    blog: "https://www.coco-study.site/",
+    feedUrl: "https://www.coco-study.site/rss.xml",
+    github: "coco8j",
+    joinDate: "2024-12-07",
+  },
 ];
