@@ -1,110 +1,65 @@
 ---
-import { Icon } from 'astro-icon/components'
-import { Profile } from '../components/Profile.tsx';
-import { users } from "../data/user";
-import { getUserProfileImageUrl, getUserBlogImageUrl } from "../modules/profile";
-import '../styles/tailwind.css';
-import { formatDistanceToNowStrict } from "date-fns";
-import { ko as koLocale } from "date-fns/locale/ko";
-import { posts } from "../modules/post";
 import PageLayout from './PageLayout.astro';
-
-const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
-  const urls = await Promise.all(users.map(user => getUserProfileImageUrl(user.name)));
-  return users.reduce((acc, user, index) => ({
-    ...acc,
-    [user.name]: urls[index],
-  }), {});
-})();
-const blogAvatarUrlByUser: Record<string, string | null> = await (async () => {
-  const urls = await Promise.all(users.map(user => getUserBlogImageUrl(user.name)));
-  return users.reduce((acc, user, index) => ({
-    ...acc,
-    [user.name]: urls[index],
-  }), {});
-})();
-
-const NOTION_UPLOAD_REQUEST_PAGE =
-  "https://github.com/roketto-dan/vaco-feeds/issues/new?assignees=0jaaack&labels=feed&projects=&template=post_request_template.md&title=%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%97%85%EB%A1%9C%EB%93%9C+%EC%9A%94%EC%B2%AD%3A+%5B%ED%8F%AC%EC%8A%A4%ED%8A%B8+%EC%A0%9C%EB%AA%A9%5D";
+import Header from '../components/Header.astro';
 ---
 
 <PageLayout title="Vaco Blog">
-  <div class="overflow-auto w-full h-full bg-gradient-to-r from-white from-80% to-teal-100">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-KDGJLWXF"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      />
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="max-w-screen-sm max-h-screen m-auto">
-      <section
-        class="fixed z-10 p-4 justify-between max-w-screen-sm w-full m-auto items-center flex bg-white border-b border-x border-gray-300 backdrop-blur-md bg-white/80"
-      >
-        <h1 class="text-lg font-extrabold font-semi-expanded">Vaco Blog</h1>
-      </section>
-      <section class="flex flex-col bg-white pt-16 border border-gray-300 divide-y divide-solid">
-        {
-          posts.map((post) => (
-            <a
-              href={post.link}
-              target="_blank"
-              class="group"
-              data-post-url={post.link}
-            >
-              <div class="flex flex-col gap-4 p-4">
-                <img
-                  class="aspect-video object-cover"
-                  src={`/thumbnails/${post.id}.webp`}
-                  alt={`${post.title} post image`}
-                  width={640}
-                  height={360}
-                  loading="lazy"
-                  onerror="this.src = 'default_thumbnail.svg';"
-                />
-                <div class="flex justify-between">
-                  <div class="flex flex-col gap-2">
-                    <h2 class="text-lg font-medium inline-block pr-[1.25em] group-[:hover:not(:has(.profile:hover))]:underline underline-offset-4 decoration-2 decoration-teal-600">
-                      {post.title}
-                      {post.isRecentPost && (
-                        <span class="inline-block bg-teal-600 h-1.5 w-1.5 rounded-full mb-2" />
-                      )}
-                    </h2>
-                    <div class="profile">
-                      <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
-                    </div>
+  <div class="overflow-auto w-full h-full max-w-[800px] m-auto">
+    <Header />
+    <!-- <section class="flex flex-col pt-16">
+      {
+        posts.map((post) => (
+          <a
+            href={post.link}
+            target="_blank"
+            class="group"
+            data-post-url={post.link}
+          >
+            <div class="flex flex-col gap-4 p-4">
+              <img
+                class="aspect-video object-cover"
+                src={`/thumbnails/${post.id}.webp`}
+                alt={`${post.title} post image`}
+                width={640}
+                height={360}
+                loading="lazy"
+                onerror="this.src = 'default_thumbnail.svg';"
+              />
+              <div class="flex justify-between">
+                <div class="flex flex-col gap-2">
+                  <h2 class="text-lg font-medium inline-block pr-[1.25em] group-[:hover:not(:has(.profile:hover))]:underline underline-offset-4 decoration-2 decoration-teal-600">
+                    {post.title}
+                    {post.isRecentPost && (
+                      <span class="inline-block bg-teal-600 h-1.5 w-1.5 rounded-full mb-2" />
+                    )}
+                  </h2>
+                  <div class="profile">
+                    <Profile userName={post.user} userAvatarUrl={userAvatarUrlByUser[post.user]} blogAvatarUrl={blogAvatarUrlByUser[post.user]} client:only="react" />
                   </div>
-                  <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap pt-1">
-                    {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
-                  </time>
                 </div>
+                <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap pt-1">
+                  {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
+                </time>
               </div>
-            </a>
-          ))
-        }
-      </section>
-      <footer class="flex justify-end p-4 gap-4 text-sm bg-white border-x border-gray-300">
-        <a
-          href="https://github.com/roketto-dan/vaco-feeds"
-          class="flex gap-1 items-center"
-        >
-          <Icon name="mingcute:github-fill" />
-          Github
-        </a>
-        <span>© 2024 로켓단</span>
-      </footer>
+            </div>
+          </a>
+        ))
+      }
+    </section> -->
+    <!-- <HeroSection /> -->
+    <!-- <RecommendPosts /> -->
+    <!-- <HotPosts /> -->
+    <!-- <NewPost /> -->
+    <!-- <Footer /> -->
+    <!-- <footer class="flex justify-end p-4 gap-4 text-sm bg-white border-x border-gray-300">
       <a
-        id="upload-button"
-        href={NOTION_UPLOAD_REQUEST_PAGE}
-        target="_blank"
-        class="fixed bottom-6 shadow-md right-6 bg-teal-600 text-white rounded-full text-sm py-1.5 px-2.5 font-semibold flex gap-1 items-center transition hover:bg-teal-700"
+        href="https://github.com/roketto-dan/vaco-feeds"
+        class="flex gap-1 items-center"
       >
-        <Icon name="mingcute:notion-fill" />
-        업로드
+        <Icon name="mingcute:github-fill" />
+        Github
       </a>
-    </div>
+      <span>© 2024 로켓단</span>
+    </footer> -->
   </div>
 </PageLayout>
