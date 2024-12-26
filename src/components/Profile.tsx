@@ -49,7 +49,7 @@ export function Profile(props: ProfileProps) {
       onMouseLeave={handleProfileLeave}
     >
       <a
-        className="flex items-center gap-1 text-sm text-gray-700"
+        className="flex items-center gap-1 text-sm text-inherit"
         href={`/${user?.github}`}
       >
         {userAvatarUrl != null && (

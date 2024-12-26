@@ -1,0 +1,60 @@
+---
+import { Profile } from "./Profile";
+import { posts } from "../modules/post";
+import { formatDistanceToNowStrict } from "date-fns";
+import { ko as koLocale } from "date-fns/locale/ko";
+
+const { class: classList } = Astro.props;
+---
+<section class={`${classList}`}>
+  <div>
+    <p class="px-1 text-xl font-bold">이 주의 추천글</p>
+    <p class="mt-[2px] px-1 text-[14px] text-[#616161]">
+      깊은 고민이 돋보이는 글을 찾아 매 주 하나의 글을 추천해드립니다.
+    </p>
+  </div>
+  <ul class="flex justify-between mt-6">
+    <li class="w-[384px]">
+      <a href={posts[0].link}>
+        <img src={`/thumbnails/${posts[0].id}.webp`} width={384} height={216} alt="" class="w-[384px] h-[216px] object-cover rounded-[20px]" />
+        <p class="mt-3 text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[0].title}</p>
+        <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
+          <Profile userName={posts[0].user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+          |
+          <time datetime={new Date(posts[0].date).toISOString()} class="text-sm text-nowrap">
+            {formatDistanceToNowStrict(new Date(posts[0].date), { addSuffix: true, locale: koLocale })}
+          </time>
+        </div>
+        <p class="mt-2 text-sm text-[#616161]">웹 개발자로서 브라우저에 대해 공부하신 내용을 깊이있게 정리해주신 글입니다.</p>
+      </a>
+    </li>
+    <li class="w-[192px]">
+      <a href={posts[1].link}>
+        <img src={`/thumbnails/${posts[1].id}.webp`} width={192} height={144} alt="" class="w-[192px] h-[144px] object-cover rounded-xl" />
+        <p class="mt-3 text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[1].title}</p>
+        <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
+          <Profile userName={posts[1].user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+          |
+          <time datetime={new Date(posts[1].date).toISOString()} class="text-sm text-nowrap">
+            {formatDistanceToNowStrict(new Date(posts[1].date), { addSuffix: true, locale: koLocale })}
+          </time>
+        </div>
+        <p class="mt-2 text-sm text-[#616161]">웹 개발자로서 브라우저에 대해 공부하신 내용을 깊이있게 정리해주신 글입니다.</p>
+      </a>
+    </li>
+    <li class="w-[192px]">
+      <a href={posts[2].link}>
+        <img src={`/thumbnails/${posts[2].id}.webp`} width={192} height={144} alt="" class="w-[192px] h-[144px] object-cover rounded-xl" />
+        <p class="mt-3 text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[2].title}</p>
+        <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
+          <Profile userName={posts[2].user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+          |
+          <time datetime={new Date(posts[2].date).toISOString()} class="text-sm text-nowrap">
+            {formatDistanceToNowStrict(new Date(posts[2].date), { addSuffix: true, locale: koLocale })}
+          </time>
+        </div>
+        <p class="mt-2 text-sm text-[#616161]">웹 개발자로서 브라우저에 대해 공부하신 내용을 깊이있게 정리해주신 글입니다.</p>
+      </a>
+    </li>
+  </ul>
+</section>
