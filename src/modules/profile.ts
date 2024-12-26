@@ -1,10 +1,10 @@
 import { getGitHubUser } from "../clients/github";
-import { users } from "../data/user";
+import { userData } from "../data/user";
 
 export async function getUserBlogImageUrl(
   userName: string,
 ): Promise<string | null> {
-  const user = users.find((user) => user.name === userName);
+  const user = userData.find((user) => user.name === userName);
 
   if (user?.blog == null) {
     return null;
@@ -23,7 +23,7 @@ const cache = new Map<string, string | null>();
 export async function getUserProfileImageUrl(
   userName: string,
 ): Promise<string | null> {
-  const user = users.find((user) => user.name === userName);
+  const user = userData.find((user) => user.name === userName);
 
   if (user == null) {
     return null;

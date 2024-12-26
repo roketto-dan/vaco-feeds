@@ -16,7 +16,7 @@ const { class: classList } = Astro.props;
         <div>
           <p class="mt-3 text-lg font-bold text-ellipsis overflow-hidden line-clamp-2">{post.title}</p>
           <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
-            <Profile userName={post.user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+            <Profile userName={post.user} />
             |
             <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap">
               {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}

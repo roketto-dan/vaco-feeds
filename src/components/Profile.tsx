@@ -5,12 +5,10 @@ import { isDateRecent } from "../utils/isDateRecent";
 
 type ProfileProps = {
   userName: User["name"];
-  userAvatarUrl: string | null;
-  blogAvatarUrl: string | null;
 };
 
 export function Profile(props: ProfileProps) {
-  const { userName, userAvatarUrl, blogAvatarUrl } = props;
+  const { userName } = props;
 
   const [status, setStatus] = useState<"close" | "hover" | "open">("close");
 
@@ -52,9 +50,9 @@ export function Profile(props: ProfileProps) {
         className="flex items-center gap-1 text-sm text-inherit"
         href={`/${user?.github}`}
       >
-        {userAvatarUrl != null && (
+        {user?.avatarUrl != null && (
           <img
-            src={userAvatarUrl}
+            src={user.avatarUrl}
             alt={`${user?.name ?? userName} Profile Image`}
             className="w-4 h-4 rounded-full"
             width={16}
@@ -79,9 +77,9 @@ export function Profile(props: ProfileProps) {
           }}
         >
           <div className="flex flex-col gap-2">
-            {userAvatarUrl != null && (
+            {user?.avatarUrl != null && (
               <img
-                src={userAvatarUrl}
+                src={user.avatarUrl}
                 alt={`${user?.name} Avatar Image`}
                 className="w-8 h-8 rounded-full"
                 width={32}
@@ -103,9 +101,9 @@ export function Profile(props: ProfileProps) {
                 target="_blank"
                 className="flex gap-1.5 items-center"
               >
-                {blogAvatarUrl != null && (
+                {user?.blogAvatarUrl != null && (
                   <img
-                    src={blogAvatarUrl}
+                    src={user.blogAvatarUrl}
                     className="grayscale"
                     alt={`${user?.name} Blog link`}
                     width={16}

@@ -19,7 +19,7 @@ const { class: classList } = Astro.props;
         <img src={`/thumbnails/${posts[0].id}.webp`} width={384} height={216} alt="" class="w-[384px] h-[216px] object-cover rounded-[20px]" />
         <p class="mt-3 text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[0].title}</p>
         <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
-          <Profile userName={posts[0].user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+          <Profile userName={posts[0].user} />
           |
           <time datetime={new Date(posts[0].date).toISOString()} class="text-sm text-nowrap">
             {formatDistanceToNowStrict(new Date(posts[0].date), { addSuffix: true, locale: koLocale })}
@@ -33,7 +33,7 @@ const { class: classList } = Astro.props;
         <img src={`/thumbnails/${posts[1].id}.webp`} width={192} height={144} alt="" class="w-[192px] h-[144px] object-cover rounded-xl" />
         <p class="mt-3 text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[1].title}</p>
         <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
-          <Profile userName={posts[1].user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+          <Profile userName={posts[1].user} />
           |
           <time datetime={new Date(posts[1].date).toISOString()} class="text-sm text-nowrap">
             {formatDistanceToNowStrict(new Date(posts[1].date), { addSuffix: true, locale: koLocale })}
@@ -47,7 +47,7 @@ const { class: classList } = Astro.props;
         <img src={`/thumbnails/${posts[2].id}.webp`} width={192} height={144} alt="" class="w-[192px] h-[144px] object-cover rounded-xl" />
         <p class="mt-3 text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[2].title}</p>
         <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
-          <Profile userName={posts[2].user} userAvatarUrl="/avatars/1.webp" blogAvatarUrl="/avatars/1.webp" />
+          <Profile userName={posts[2].user} />
           |
           <time datetime={new Date(posts[2].date).toISOString()} class="text-sm text-nowrap">
             {formatDistanceToNowStrict(new Date(posts[2].date), { addSuffix: true, locale: koLocale })}
