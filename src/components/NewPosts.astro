@@ -3,11 +3,16 @@ import { Profile } from "./Profile";
 import { posts } from "../modules/post";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ko as koLocale } from "date-fns/locale/ko";
+import { Focusing } from "./Focusing";
 
 const { class: classList } = Astro.props;
 ---
 <section class={`${classList}`}>
-  <p class="px-1 text-xl font-bold">최근 올라온 글</p>
+  <p class="px-1 text-xl font-bold">최근 올라온 글 
+    <Focusing client:load>
+      <span class="inline-block animate-wiggle">✨</span>
+    </Focusing>
+  </p>
   <ul class="flex flex-wrap gap-y-8 justify-between mt-6 pl-4">
     {posts.map((post) => (
       <li class="w-[248px]">

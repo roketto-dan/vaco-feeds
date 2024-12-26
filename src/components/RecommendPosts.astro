@@ -3,12 +3,17 @@ import { Profile } from "./Profile";
 import { posts } from "../modules/post";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ko as koLocale } from "date-fns/locale/ko";
+import { Focusing } from "./Focusing";
 
 const { class: classList } = Astro.props;
 ---
 <section class={`${classList}`}>
   <div>
-    <p class="px-1 text-xl font-bold">이 주의 추천글</p>
+    <p class="px-1 text-xl font-bold">이 주의 추천글 
+      <Focusing client:load>
+        <span class="inline-block animate-wiggle">📝</span>
+      </Focusing>
+    </p>
     <p class="mt-[2px] px-1 text-[14px] text-[#616161]">
       깊은 고민이 돋보이는 글을 찾아 매 주 하나의 글을 추천해드립니다.
     </p>
