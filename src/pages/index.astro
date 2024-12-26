@@ -1,11 +1,13 @@
 ---
 import PageLayout from './PageLayout.astro';
 import Header from '../components/Header.astro';
+import HeroSection from '../components/HeroSection.astro';
 ---
 
 <PageLayout title="Vaco Blog">
   <div class="overflow-auto w-full h-full max-w-[800px] m-auto">
     <Header />
+    <HeroSection />
     <!-- <section class="flex flex-col pt-16">
       {
         posts.map((post) => (
@@ -46,7 +48,6 @@ import Header from '../components/Header.astro';
         ))
       }
     </section> -->
-    <!-- <HeroSection /> -->
     <!-- <RecommendPosts /> -->
     <!-- <HotPosts /> -->
     <!-- <NewPost /> -->
