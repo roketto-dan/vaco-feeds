@@ -68,7 +68,7 @@ export function Profile(props: ProfileProps) {
         )}
       </a>
       <div
-        className={`absolute top-full left-0 pt-1.5 z-10 select-none ${user != null && status === "open" ? "block" : "hidden"}`}
+        className={`absolute top-full left-0 pt-1.5 z-1 select-none ${user != null && status === "open" ? "block" : "hidden"}`}
         onClick={(event) => !event.bubbles && event.preventDefault()}
       >
         <section
