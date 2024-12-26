@@ -1,0 +1,29 @@
+---
+const { class: classList } = Astro.props;
+---
+
+<footer class={`p-4 text-sm border-t-2 border-[#1E1E1E] ${classList}`}>
+  <menu class="flex flex-col gap-2">
+    <li>
+      <a
+        href="https://github.com/roketto-dan/vaco-feeds"
+        class="flex gap-1 items-center"
+      >
+        내 블로그 등록하기
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://github.com/roketto-dan/vaco-feeds"
+        class="flex gap-1 items-center"
+      >
+        Github
+      </a>
+    </li>
+  </menu>
+  <p class="mt-6 text-[12px]">
+    Copyright © {new Date().getFullYear()}
+    <br />
+    Team Rocketto-dan All Rights Reserved.
+  </p>
+</footer>
