@@ -2,7 +2,7 @@
 const { class: classList } = Astro.props;
 ---
 
-<footer class={`p-4 text-sm border-t-2 border-[#1E1E1E] ${classList}`}>
+<footer class={`p-4 text-xs border-t-2 border-[#1E1E1E] md:text-sm ${classList}`}>
   <menu class="flex flex-col gap-2">
     <li>
       <a
@@ -21,7 +21,7 @@ const { class: classList } = Astro.props;
       </a>
     </li>
   </menu>
-  <p class="mt-6 text-[12px]">
+  <p class="mt-6 text-[10px] md:text-[12px]">
     Copyright © {new Date().getFullYear()}
     <br />
     Team Rocketto-dan All Rights Reserved.

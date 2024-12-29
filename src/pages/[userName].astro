@@ -43,16 +43,16 @@ const userPosts = posts.filter((post) => post.user === user?.name);
         </section>
         <div class="flex flex-col items-center p-6 pt-24 border-x border-gray-300">
           <img src={userAvatarUrlByUser[user.name]} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mt-4">{user.name}</h1>
-          <h1 class="text-md sm:text-lg text-gray-600 mt-0.5">@{user.github}</h1>
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mt-4">{user.name}</h1>
+          <h1 class="text-md md:text-lg text-gray-600 mt-0.5">@{user.github}</h1>
         </div>
         <div class="flex flex-wrap">
-          <a href={user.blog} target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-800 w-full px-5 py-3 text-md sm:text-lg font-semibold border border-b-0 border-gray-300 hover:bg-zinc-200">
+          <a href={user.blog} target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-800 w-full px-5 py-3 text-md md:text-lg font-semibold border border-b-0 border-gray-300 hover:bg-zinc-200">
             <img src={blogAvatarUrl ?? ""} alt={user.name} width="24" height="24" class="mr-2" />
             Blog
             <Icon class="ml-auto" name="mingcute:arrow-right-line" width="24" height="24" />
           </a>
-          <a href={`https://github.com/${user.github}`} target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-800 w-full px-5 py-3 text-md sm:text-lg font-semibold border border-gray-300 hover:bg-zinc-200">
+          <a href={`https://github.com/${user.github}`} target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-800 w-full px-5 py-3 text-md md:text-lg font-semibold border border-gray-300 hover:bg-zinc-200">
             <Icon name="mingcute:github-fill" class="mr-2" width="24" height="24" />
             Github
             <Icon class="ml-auto" name="mingcute:arrow-right-line" width="24" height="24" />
@@ -63,9 +63,9 @@ const userPosts = posts.filter((post) => post.user === user?.name);
           <ul class="flex flex-col gap-2">
           {userPosts.map((post) => (
             <li class="hover:bg-zinc-200 p-2 rounded-md">
-              <a href={post.link} target="_blank" rel="noopener noreferrer" class="flex flex-col gap-3 sm:flex-row sm:gap-5">
+              <a href={post.link} target="_blank" rel="noopener noreferrer" class="flex flex-col gap-3 md:flex-row md:gap-5">
                 <img
-                  class="basis-[230px] shrink-0 aspect-[230/130] object-cover rounded-md w-full sm:w-[230px]"
+                  class="basis-[230px] shrink-0 aspect-[230/130] object-cover rounded-md w-full md:w-[230px]"
                   src={`/thumbnails/${post.id}.webp`}
                   alt={`${post.title} post image`}
                   width="230"

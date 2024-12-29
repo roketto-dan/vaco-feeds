@@ -46,17 +46,14 @@ export function Profile(props: ProfileProps) {
       onMouseEnter={handleProfileEnter}
       onMouseLeave={handleProfileLeave}
     >
-      <a
-        className="flex items-center gap-1 text-sm text-inherit"
-        href={`/${user?.github}`}
-      >
+      <a className="flex items-center gap-1" href={`/${user?.github}`}>
         {user?.avatarUrl != null && (
           <img
             src={user.avatarUrl}
             alt={`${user?.name ?? userName} Profile Image`}
-            className="w-4 h-4 rounded-full"
-            width={16}
-            height={16}
+            className="w-5 h-5 rounded-full"
+            width={20}
+            height={20}
             loading="lazy"
           />
         )}
