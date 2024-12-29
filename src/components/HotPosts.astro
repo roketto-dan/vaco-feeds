@@ -20,7 +20,7 @@ const { class: classList } = Astro.props;
   <ul class="flex flex-col gap-3 mt-3 px-2 md:px-4 md:mt-6">
     {posts.slice(3, 6).map((post) => (
       <li class="flex gap-3 items-center md:gap-5">
-        <img src={`/thumbnails/${post.id}.webp`} width={200} height={150} alt="" class="w-[200px] h-[150px] object-cover rounded-xl" />
+        <Thumbnail post={post} width={200} height={150} className="rounded-xl w-[160px] h-[120px] lg:w-[200px] lg:h-[150px]" />
         <div>
           <a href={post.link}>
             <p class="text-md font-bold text-ellipsis overflow-hidden line-clamp-2 md:text-xl">{post.title}</p>

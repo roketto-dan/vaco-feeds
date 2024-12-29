@@ -1,0 +1,12 @@
+---
+const { post, width, height, className } = Astro.props;
+---
+
+<img
+  src={`/thumbnails/${post.id}.webp`}
+  width={width}
+  height={height}
+  alt=""
+  loading="lazy"
+  class={`w-[${width}px] h-[${height}px] object-cover ${className}`}
+/>

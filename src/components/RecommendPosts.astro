@@ -4,6 +4,7 @@ import { posts } from "../modules/post";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ko as koLocale } from "date-fns/locale/ko";
 import { Focusing } from "./Focusing";
+import Thumbnail from "./Thumbnail.astro";
 
 const { class: classList } = Astro.props;
 ---
@@ -21,7 +22,7 @@ const { class: classList } = Astro.props;
   <ul class="hidden sm:flex justify-between mt-6">
     <li class="w-[384px]">
       <a href={posts[0].link}>
-        <img src={`/thumbnails/${posts[0].id}.webp`} width={384} height={216} alt="" class="w-[384px] h-[216px] object-cover rounded-[20px]" />
+        <Thumbnail post={posts[0]} width={384} height={216} className="rounded-[20px]" />
         <p class="mt-3 text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2">{posts[0].title}</p>
         <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
           <Profile userName={posts[0].user} />
@@ -36,7 +37,7 @@ const { class: classList } = Astro.props;
     {[posts[1], posts[2]].map((post) => (
       <li class="w-[192px]">
         <a href={posts[1].link}>
-          <img src={`/thumbnails/${posts[1].id}.webp`} width={192} height={144} alt="" class="w-[192px] h-[144px] object-cover rounded-xl" />
+          <Thumbnail post={post} width={192} height={144} className="rounded-xl" />
           <p class="mt-3 text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">{post.title}</p>
           <div class="mt-2 flex items-center gap-1 text-[#3B3B3B]">
             <Profile userName={post.user} />
