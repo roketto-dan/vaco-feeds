@@ -1,4 +1,8 @@
-<section class="px-[10px] py-12 md:py-8">
+---
+const { class: classList } = Astro.props;
+---
+
+<section class={`px-3 py-16 md:py-8 md:px-[10px] ${classList}`}>
   <p class="text-2xl font-bold md:text-[28px]">
     글을 사랑하는 우리가 <br />
     더 많은 이야기를 나누는 곳
