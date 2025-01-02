@@ -7,8 +7,10 @@ const BLOG_INTERGRATION_REQUEST_PAGE =
   "https://github.com/roketto-dan/vaco-feeds/issues/new?assignees=0jaaack&labels=feed&projects=&template=blog_request_template.md&title=%EB%B8%94%EB%A1%9C%EA%B7%B8+%EC%97%B0%EB%8F%99+%EC%9A%94%EC%B2%AD";
 ---
 
-<section class={`flex px-2 py-3 justify-start items-center w-full ${className}`}>
-  <h1 class="text-2xl font-bold">바코 블로그</h1>
+<section class={`flex px-3 pt-5 pb-3 justify-start items-center w-full ${className}`}>
+  <h1 class="text-2xl font-bold">
+    <a href="/">바코 블로그</a>
+  </h1>
   <menu class="flex gap-2 ml-4">
     <a href={BLOG_INTERGRATION_REQUEST_PAGE} target="_blank" class="text-sm font-medium text-[#575756]">내 블로그 등록</a>
     <a href={NOTION_UPLOAD_REQUEST_PAGE} target="_blank" class="text-sm font-medium text-[#575756]">노션 글 등록</a>
