@@ -5,7 +5,7 @@ import { isDateRecent } from "../utils/isDateRecent";
 import { getRssFeed } from "./rss";
 import slugify from "slugify";
 
-type Post = {
+export type Post = {
   id: string;
   user: string;
   title: string;
@@ -14,7 +14,7 @@ type Post = {
   isRecentPost: boolean;
 };
 
-function generatePostId(post: { title: string }): string {
+export function generatePostId(post: { title: string }): string {
   return slugify(post.title, {
     remove: /[*+~.,()\[\]'"!?:@]/g,
     lower: true,
