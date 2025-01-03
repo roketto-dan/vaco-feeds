@@ -1,9 +1,12 @@
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { users, type User } from "../data/user";
 import { notionPosts } from "../data/notionPost";
 import { isDateRecent } from "../utils/isDateRecent";
 import { getRssFeed } from "./rss";
 import slugify from "slugify";
+import { GoogleAuth } from "google-auth-library";
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import type { google } from "@google-analytics/data/build/protos/protos";
 
 export type Post = {
   id: string;
@@ -115,3 +118,87 @@ async function getPostsFromRssFeed(user: User): Promise<Post[]> {
 }
 
 export const posts = await getPosts();
+
+const AnalyticsDataClient = new BetaAnalyticsDataClient({
+  auth: new GoogleAuth({
+    projectId: import.meta.env.PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID,
+    scopes: "https://www.googleapis.com/auth/analytics",
+    credentials: {
+      client_email: import.meta.env
+        .PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_CLIENT_EMAIL,
+      private_key:
+        import.meta.env.PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY.replace(
+          /\\n/g,
+          "\n",
+        ),
+    },
+  }),
+});
+const PROPERTY_ID = "457228352";
+
+export async function getHotPostUrls(startDate: Date, endDate: Date) {
+  const [response] = await AnalyticsDataClient.runReport({
+    property: `properties/${PROPERTY_ID}`,
+    dateRanges: [
+      {
+        startDate: formatISO(startDate, { representation: "date" }),
+        endDate: formatISO(endDate, { representation: "date" }),
+      },
+    ],
+    dimensions: [
+      {
+        name: "customEvent:post_url",
+      },
+    ],
+    metrics: [
+      {
+        name: "eventCount",
+      },
+    ],
+    dimensionFilter: {
+      andGroup: {
+        expressions: [
+          {
+            filter: {
+              fieldName: "eventName",
+              stringFilter: {
+                value: "post_click",
+              },
+            },
+          },
+          {
+            notExpression: {
+              filter: {
+                fieldName: "customEvent:post_url",
+                inListFilter: {
+                  values: ["(not set)", "", "null"],
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  return (
+    response.rows
+      ?.filter(
+        (
+          row,
+        ): row is {
+          dimensionValues: google.analytics.data.v1beta.IDimensionValue[];
+          metricValues: google.analytics.data.v1beta.IMetricValue[];
+        } => row.dimensionValues != null && row.metricValues != null,
+      )
+      .map((row) => ({
+        url: row.dimensionValues[0].value,
+        count: row.metricValues[0].value,
+      }))
+      .filter(
+        (post): post is { url: string; count: string } =>
+          post.url != null && post.count != null,
+      )
+      .sort((a, b) => Number(b.count) - Number(a.count)) ?? []
+  );
+}

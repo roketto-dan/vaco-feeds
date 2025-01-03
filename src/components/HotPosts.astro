@@ -1,12 +1,17 @@
 ---
 import { Profile } from "./Profile";
-import { posts } from "../modules/post";
-import { formatDistanceToNowStrict } from "date-fns";
+import { getHotPostUrls, posts } from "../modules/post";
+import { formatDistanceToNowStrict, subDays } from "date-fns";
 import { ko as koLocale } from "date-fns/locale/ko";
 import { Focusing } from "./Focusing";
 import Thumbnail from "./Thumbnail.astro";
 
 const { class: classList } = Astro.props;
+
+const mostViewedPostUrls = await getHotPostUrls(subDays(new Date(), 3), new Date());
+const hotPosts = mostViewedPostUrls
+  .map((post) => posts.find((p) => p.link === post.url || p.link === post.url + 'a------2'))
+  .filter((post) => post != null);
 ---
 <section class={`${classList}`}>
   <div>
@@ -15,10 +20,10 @@ const { class: classList } = Astro.props;
         <span class="inline-block animate-wiggle">🔥</span>
       </Focusing>
     </p>
-    <p class="mt-[2px] px-2 text-[12px] text-[#616161] md:text-[14px]">지금 이 순간 가장 많은 사람들이 보고 있는 글</p>
+    <p class="mt-[2px] px-2 text-[12px] text-[#616161] md:text-[14px]">최근 가장 많은 조회수를 기록한 글들</p>
   </div>
-  <ul class="flex flex-col gap-3 mt-3 px-2 md:px-4 md:mt-6">
-    {posts.slice(3, 6).map((post) => (
+  <ul class="flex flex-col gap-3 mt-6 px-2 md:px-4">
+    {hotPosts.slice(0, 3).map((post) => (
       <li class="flex gap-3 items-center md:gap-5">
         <Thumbnail post={post} width={200} height={150} className="rounded-xl w-[160px] h-[120px] lg:w-[200px] lg:h-[150px]" />
         <div>
