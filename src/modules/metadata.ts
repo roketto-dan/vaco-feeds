@@ -30,7 +30,15 @@ export async function getImage(url: string): Promise<string | undefined> {
     if (cache.has(url)) {
       html = cache.get(url);
     } else {
-      const response = await axios.get(url, { timeout: 5000 });
+      const response = await axios.get(url, {
+        timeout: 5000,
+        ...(url.includes("notion.site") && {
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+          },
+        }),
+      });
       html = response.data;
 
       cache.set(url, html);
