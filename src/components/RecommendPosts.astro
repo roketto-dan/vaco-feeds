@@ -1,0 +1,153 @@
+---
+import { Profile } from "./Profile";
+import { type Post, posts, generatePostId } from "../modules/post";
+import { formatDistanceToNowStrict } from "date-fns";
+import { ko as koLocale } from "date-fns/locale/ko";
+import { Focusing } from "./Focusing";
+import Thumbnail from "./Thumbnail.astro";
+
+const { class: classList } = Astro.props;
+const recommandPosts: (Post & { comment: string })[] = [
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "웹 개발자에게 브라우저란?" }))!,
+    comment: "웹 개발자로서 브라우저에 대해 공부하신 내용을 깊이있게 정리해주신 글입니다.",
+  },
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "리액트에서의 렌더링이란 무엇일까?" }))!,
+    comment: "프론트앤드 개발자가 되기 위해 열심히 리액트를 공부하시며 정리하신 글로 리액트에서 말하는 렌더링이라는 단어에 대해 깊은 이해를 할 수 있게 해주는 글입니다.",
+  },
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "내 README.md에 목차를 넣는건 계획대로 되지 않아" }))!,
+    comment: "리드미를 작성할 때 목차를 쉽고 정확하게 넣을 수 있는 방법을 알려주는 글입니다. 특히 취업을 위해 프로젝트 리드미를 작성하실 때 유용하시리라 생각됩니다.",
+  },
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "[React] 무한 렌더링 서바이벌" }))!,
+    comment: "리액트의 렌더링과 여러 훅의 역할을 '무한 렌더링' 이라는 서바이벌 프로그램 컨셉으로 재밌게 풀어주신 내용입니다."
+  },
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "input의 길이를 내부 값에 따라 동적으로 조절해보자" }))!,
+    comment: "동영상 위에 글귀를 추가하는 기능을 개발하는 과정에서 겪었던 기술적인 챌린지를 생생하게 기록해주셔서 재밌게 읽었습니다.",
+  },
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "다시 생각하는 useEffect" }))!,
+    comment: "리액트에서 effect는 널리 쓰이는 API이지만, 그와 동시에 참 기이한 존재기도하죠. 이 글은 리액트와 effect가 어떻게 만들어졌는지 짚어보며 그 의미를 다시금 일깨워주는 글입니다."
+  },
+  {
+    ...posts.find((post) => post.id === generatePostId({ title: "싱가포르의 각종 코워킹 스페이스 후기" }))!,
+    comment: "디지털 노마드 생활을 하셨던 영교님이 싱가포르에서 여러 코워킹 스페이스들을 경험하고 느끼신 것들을 공유해주신 포스트로, 디지털 노마드 생활을 간접적으로 경험해볼 수 있는 재밌는 내용이라 생각합니다.",
+  },
+];
+---
+<section class={`${classList}`}>
+  <div>
+    <p class="px-2 text-lg font-bold md:text-xl">이 주의 추천글 
+      <Focusing client:load>
+        <span class="inline-block animate-wiggle">📝</span>
+      </Focusing>
+    </p>
+    <p class="mt-[2px] px-2 text-[12px] text-[#616161] md:text-[14px]">
+      깊은 고민이 돋보이는 글을 찾아 매 주 하나의 글을 추천해드립니다.
+    </p>
+  </div>
+
+  <!-- Post Slider Section(Mobile) -->
+  <div class="block md:hidden">
+    <swiper-container class="mt-4" init="false">
+      {recommandPosts.map((post) => (
+        <swiper-slide class="group w-[calc(100%-((12px+20px)*2))]">
+          <a href={post.link} class="opacity-60 group-[.swiper-slide-active]:opacity-100">
+            <Thumbnail post={post} width={384} height={216} className="w-full aspect-video rounded-xl" />
+            <div class="hidden group-[.swiper-slide-active]:block">
+              <p class="mt-3 text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">{post.title}</p>
+              <div class="mt-4 flex items-center gap-1 text-sm text-[#3B3B3B]">
+                <Profile userName={post.user} />
+                |
+                <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap">
+                  {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
+                </time>
+              </div>
+              <p class="mt-3 text-[14px] leading-[22px] text-[#616161]">{post.comment}</p>
+            </div>
+          </a>
+        </swiper-slide>
+      ))}
+    </swiper-container>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+    <script is:inline type="module">
+      const swiperEl = document.querySelector('swiper-container');
+      const params = {
+        navigation: true,
+        loop: true,
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        spaceBetween: 12,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        injectStyles: [
+          `
+          .swiper-wrapper {
+            height: 380px;
+          }
+          .swiper-button-prev,
+          .swiper-button-next {
+            width: 32px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            margin: 0;
+          }
+          .swiper-button-prev,
+          .swiper-button-next svg {
+            display: none;
+          }
+          .swiper-button-prev {
+            left: 0;
+          }
+          .swiper-button-next {
+            right: 0;
+          }
+          `,
+        ],
+      };
+      Object.assign(swiperEl, params);
+      swiperEl.initialize();
+    </script>
+  </div>
+
+  <!-- 1 + 2 Post Section(Desktop) -->
+  <ul class="hidden md:flex justify-between mt-6">
+    <li class="w-[384px]">
+      <a href={recommandPosts[0].link}>
+        <Thumbnail post={recommandPosts[0]} width={384} height={216} className="rounded-[20px]" />
+        <p class="mt-3 text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2">{recommandPosts[0].title}</p>
+        <div class="mt-4 flex items-center gap-1 text-sm text-[#3B3B3B]">
+          <Profile userName={recommandPosts[0].user} />
+          |
+          <time datetime={new Date(recommandPosts[0].date).toISOString()} class="text-sm text-nowrap">
+            {formatDistanceToNowStrict(new Date(recommandPosts[0].date), { addSuffix: true, locale: koLocale })}
+          </time>
+        </div>
+        <p class="mt-3 text-[14px] text-[#616161] break-keep">{recommandPosts[0].comment}</p>
+      </a>
+    </li>
+    {recommandPosts.slice(1, 3).map((post) => (
+      <li class="w-[192px]">
+        <a href={post.link}>
+          <Thumbnail post={post} width={192} height={144} className="rounded-xl" />
+          <p class="mt-3 text-lg font-bold text-ellipsis overflow-hidden line-clamp-2">{post.title}</p>
+          <div class="mt-4 flex items-center gap-1 text-sm text-[#3B3B3B]">
+            <Profile userName={post.user} />
+            |
+            <time datetime={new Date(post.date).toISOString()} class="text-sm text-nowrap">
+              {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
+            </time>
+          </div>
+          <p class="mt-3 text-[14px] text-[#616161] break-keep">{post.comment}</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

@@ -5,12 +5,10 @@ import { isDateRecent } from "../utils/isDateRecent";
 
 type ProfileProps = {
   userName: User["name"];
-  userAvatarUrl: string | null;
-  blogAvatarUrl: string | null;
 };
 
 export function Profile(props: ProfileProps) {
-  const { userName, userAvatarUrl, blogAvatarUrl } = props;
+  const { userName } = props;
 
   const [status, setStatus] = useState<"close" | "hover" | "open">("close");
 
@@ -48,17 +46,14 @@ export function Profile(props: ProfileProps) {
       onMouseEnter={handleProfileEnter}
       onMouseLeave={handleProfileLeave}
     >
-      <a
-        className="flex items-center gap-1 text-sm text-gray-700"
-        href={`/${user?.github}`}
-      >
-        {userAvatarUrl != null && (
+      <a className="flex items-center gap-1" href={`/${user?.github}`}>
+        {user?.avatarUrl != null && (
           <img
-            src={userAvatarUrl}
+            src={user.avatarUrl}
             alt={`${user?.name ?? userName} Profile Image`}
-            className="w-4 h-4 rounded-full"
-            width={16}
-            height={16}
+            className="w-5 h-5 rounded-full"
+            width={20}
+            height={20}
             loading="lazy"
           />
         )}
@@ -68,7 +63,7 @@ export function Profile(props: ProfileProps) {
         )}
       </a>
       <div
-        className={`absolute top-full left-0 pt-1.5 z-10 select-none ${user != null && status === "open" ? "block" : "hidden"}`}
+        className={`absolute top-full left-0 pt-1.5 z-1 select-none ${user != null && status === "open" ? "block" : "hidden"}`}
         onClick={(event) => !event.bubbles && event.preventDefault()}
       >
         <section
@@ -79,9 +74,9 @@ export function Profile(props: ProfileProps) {
           }}
         >
           <div className="flex flex-col gap-2">
-            {userAvatarUrl != null && (
+            {user?.avatarUrl != null && (
               <img
-                src={userAvatarUrl}
+                src={user.avatarUrl}
                 alt={`${user?.name} Avatar Image`}
                 className="w-8 h-8 rounded-full"
                 width={32}
@@ -103,9 +98,9 @@ export function Profile(props: ProfileProps) {
                 target="_blank"
                 className="flex gap-1.5 items-center"
               >
-                {blogAvatarUrl != null && (
+                {user?.blogAvatarUrl != null && (
                   <img
-                    src={blogAvatarUrl}
+                    src={user.blogAvatarUrl}
                     className="grayscale"
                     alt={`${user?.name} Blog link`}
                     width={16}

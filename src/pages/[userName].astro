@@ -1,12 +1,15 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { users } from '../data/user';
-import { getUserBlogImageUrl, getUserProfileImageUrl } from '../modules/profile';
 import PageLayout from './PageLayout.astro';
 import { posts } from '../modules/post';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ko as koLocale } from "date-fns/locale/ko";
 import '../styles/tailwind.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Thumbnail from '../components/Thumbnail.astro';
+import { Profile } from '../components/Profile';
 
 export function getStaticPaths() {
   return users.map((user) => ({
@@ -14,86 +17,54 @@ export function getStaticPaths() {
   }));
 }
 
-const userAvatarUrlByUser: Record<string, string | null> = await (async () => {
-  const urls = await Promise.all(users.map(user => getUserProfileImageUrl(user.name)));
-  return users.reduce((acc, user, index) => ({
-    ...acc,
-    [user.name]: urls[index],
-  }), {});
-})();
-
 const { userName } = Astro.params;
 const user = users.find((user) => user.github === userName);
-const blogAvatarUrl = await getUserBlogImageUrl(user?.name ?? '');
 const userPosts = posts.filter((post) => post.user === user?.name);
 ---
 
 <PageLayout title={`${user?.name}님의 프로필`}>
-  <div class="overflow-auto w-full h-full bg-gradient-to-r from-white from-80% to-teal-100">
-    <div class="max-w-screen-sm m-auto">
-      {user == null ? (
-        <h1>User not found</h1>
-      ) : (
-        <section
-          class="fixed z-10 p-4 justify-between max-w-screen-sm w-full m-auto items-center flex bg-white border-b border-x border-gray-300 backdrop-blur-md bg-white/80"
-        >
-          <a href="/">
-            <h1 class="m-auto text-lg font-extrabold font-semi-expanded text-gray-800">Vaco Blog</h1>
-          </a>
-        </section>
-        <div class="flex flex-col items-center p-6 pt-24 border-x border-gray-300">
-          <img src={userAvatarUrlByUser[user.name]} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mt-4">{user.name}</h1>
-          <h1 class="text-md sm:text-lg text-gray-600 mt-0.5">@{user.github}</h1>
-        </div>
-        <div class="flex flex-wrap">
-          <a href={user.blog} target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-800 w-full px-5 py-3 text-md sm:text-lg font-semibold border border-b-0 border-gray-300 hover:bg-zinc-200">
-            <img src={blogAvatarUrl ?? ""} alt={user.name} width="24" height="24" class="mr-2" />
-            Blog
-            <Icon class="ml-auto" name="mingcute:arrow-right-line" width="24" height="24" />
-          </a>
-          <a href={`https://github.com/${user.github}`} target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-800 w-full px-5 py-3 text-md sm:text-lg font-semibold border border-gray-300 hover:bg-zinc-200">
-            <Icon name="mingcute:github-fill" class="mr-2" width="24" height="24" />
-            Github
-            <Icon class="ml-auto" name="mingcute:arrow-right-line" width="24" height="24" />
-          </a>
-        </div>
-        <section class="p-5 border-x border-b border-gray-300">
-          <p class="text-gray-800 text-xl font-semibold mb-2">Posts</p>
-          <ul class="flex flex-col gap-2">
-          {userPosts.map((post) => (
-            <li class="hover:bg-zinc-200 p-2 rounded-md">
-              <a href={post.link} target="_blank" rel="noopener noreferrer" class="flex flex-col gap-3 sm:flex-row sm:gap-5">
-                <img
-                  class="basis-[230px] shrink-0 aspect-[230/130] object-cover rounded-md w-full sm:w-[230px]"
-                  src={`/thumbnails/${post.id}.webp`}
-                  alt={`${post.title} post image`}
-                  width="230"
-                  height="130"
-                />
-                <div class="w-full flex flex-col">
-                  <time datetime={new Date(post.date).toISOString()} class="text-xs text-nowrap text-gray-500 pt-1">
-                    {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
-                  </time>
-                  <p class="text-gray-800 text-lg font-semibold mt-1">{post.title}</p>
-                  <Icon class="mt-auto ml-auto" name="mingcute:arrow-right-line" width="24" height="24"/>
-                </div>
-              </a>
-            </li>
-          ))}
-          </ul>
-        </section>
-      )}
-      <footer class="flex justify-end p-4 gap-4 text-sm border-x border-gray-300">
-        <a
-          href="https://github.com/roketto-dan/vaco-feeds"
-          class="flex gap-1 items-center"
-        >
-          <Icon name="mingcute:github-fill" />
+  <div class="w-full h-full max-w-[800px] m-auto">
+    {user == null ? (
+      <h1>User not found</h1>
+    ) : (
+      <Header class="sticky top-0 bg-[#FCFAFB] z-10 md:mt-5" />
+      <div class="flex flex-col items-center p-6 pt-20">
+        <img src={user.avatarUrl} alt={user.name} width="120" height="120" class="rounded-full border-2 border-gray-300 bg-white" />
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mt-4">{user.name}</h1>
+        <h1 class="text-md md:text-lg text-gray-600 mt-0.5">@{user.github}</h1>
+      </div>
+      <div class="flex justify-center mt-4">
+        <a href={user.blog} target="_blank" rel="noopener noreferrer" class="flex flex-col gap-2 items-center text-gray-800 p-3 text-md font-semibold">
+          <img src={user.blogAvatarUrl} alt={user.name} width="24" height="24" />
+          Blog
+        </a>
+        <a href={`https://github.com/${user.github}`} target="_blank" rel="noopener noreferrer" class="flex flex-col gap-2 items-center text-gray-800 p-3 text-md font-semibold">
+          <Icon name="mingcute:github-fill" width="24" height="24" />
           Github
         </a>
-        <span>© 2024 로켓단</span>
-      </footer>
-    </div>
+      </div>
+      <section class="px-20 py-5 mt-4">
+        <ul class="flex flex-col gap-4">
+          {userPosts.map((post) => (
+            <li class="flex gap-3 items-center md:gap-5">
+              <Thumbnail post={post} width={200} height={150} className="rounded-xl w-[160px] h-[120px] lg:w-[200px] lg:h-[150px]" />
+              <div>
+                <a href={post.link}>
+                  <p class="text-md font-bold text-ellipsis overflow-hidden line-clamp-2 md:text-xl">{post.title}</p>
+                </a>
+                <div class="mt-3 flex items-center gap-1 text-[#3B3B3B] text-xs md:text-sm">
+                  <Profile userName={post.user} />
+                  |
+                  <time datetime={new Date(post.date).toISOString()} class="text-nowrap">
+                    {formatDistanceToNowStrict(new Date(post.date), { addSuffix: true, locale: koLocale })}
+                  </time>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+    <Footer />
   </div>
 </PageLayout>

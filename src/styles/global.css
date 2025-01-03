@@ -1,0 +1,10 @@
+@import "//cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css";
+
+:root {
+  font-family: "KoPub Dotum", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1e1e1e;
+  background-color: #fcfafb;
+}

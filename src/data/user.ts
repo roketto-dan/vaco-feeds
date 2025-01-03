@@ -1,3 +1,7 @@
+import { getUserProfileImageUrl } from "../modules/profile";
+
+import { getUserBlogImageUrl } from "../modules/profile";
+
 export type User = {
   name: string;
   feedUrl: string;
@@ -7,9 +11,11 @@ export type User = {
   email?: string;
   slack?: string;
   joinDate?: string;
+  avatarUrl: string | null;
+  blogAvatarUrl: string | null;
 };
 
-export const users: User[] = [
+export const userData = [
   {
     name: "공재혁",
     blog: "https://www.jaaack.dev",
@@ -71,3 +77,11 @@ export const users: User[] = [
     joinDate: "2024-12-07",
   },
 ];
+
+export const users: User[] = await Promise.all(
+  userData.map(async (user) => ({
+    ...user,
+    avatarUrl: await getUserProfileImageUrl(user.name),
+    blogAvatarUrl: await getUserBlogImageUrl(user.name),
+  })),
+);
