@@ -1,7 +1,7 @@
 export const notionPosts = [
   {
     title: "올인원 테이블 제작기",
-    link: "https://0jaaack.notion.site/b2a981df3d474476ad7328644971108f",
+    link: "https://studynightlive.notion.site/13d6aa62ebc381f79313d42f7a49589a",
     date: "2024.04.07",
     user: "공재혁",
   },
