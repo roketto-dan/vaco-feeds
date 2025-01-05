@@ -36,6 +36,8 @@ export const GET: APIRoute = async ({ request }) => {
       headers: {
         "Content-Type": "image/webp",
         "Cache-Control": `public, max-age=${60 * 60}, s-maxage=${60 * 60 * 24 * 365}`,
+        "CDN-Cache-Control": `max-age=${60 * 60 * 12}`,
+        "Cloudflare-CDN-Cache-Control": `max-age=${60 * 60 * 24}`,
         "Content-Length": thumbnail.length.toString(),
         ETag: btoa(thumbnailUrl),
       },
