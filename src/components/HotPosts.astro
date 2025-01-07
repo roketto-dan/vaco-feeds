@@ -13,7 +13,7 @@ const hotPosts = mostViewedPostUrls
   .map((post) => posts.find((p) => p.link === post.url || p.link === post.url + 'a------2'))
   .filter((post) => post != null);
 ---
-<section class={`${classList}`}>
+{hotPosts.length > 0 && <section class={`${classList}`}>
   <div>
     <p class="px-2 text-md font-bold md:text-xl">많은 사람들이 보는 글 
       <Focusing client:load>
@@ -41,4 +41,4 @@ const hotPosts = mostViewedPostUrls
       </li>
     ))}
   </ul>
-</section>
+</section>}
