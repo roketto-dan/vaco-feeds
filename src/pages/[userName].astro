@@ -49,7 +49,7 @@ const userPosts = posts.filter((post) => post.user === user?.name);
             <li class="flex gap-3 items-center md:gap-5">
               <Thumbnail post={post} width={200} height={150} className="rounded-xl w-[160px] h-[120px] lg:w-[200px] lg:h-[150px]" />
               <div>
-                <a href={post.link}>
+                <a target="_blank" rel="noopener noreferrer" href={post.link} data-post-url={post.link}>
                   <p class="text-md font-bold text-ellipsis overflow-hidden line-clamp-2 md:text-xl">{post.title}</p>
                 </a>
                 <div class="mt-3 flex items-center gap-1 text-[#3B3B3B] text-xs md:text-sm">
