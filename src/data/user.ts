@@ -76,6 +76,13 @@ export const userData = [
     github: "coco8j",
     joinDate: "2024-12-07",
   },
+  {
+    name: "김소연",
+    blog: "https://medium.com/@hong7ya",
+    feedUrl: "https://medium.com/@hong7ya/feed",
+    github: "hong7ya",
+    joinDate: "2025-04-15",
+  },
 ];
 
 export const users: User[] = await Promise.all(
