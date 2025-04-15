@@ -9,7 +9,7 @@ import Thumbnail from "./Thumbnail.astro";
 const { class: classList } = Astro.props;
 const recommandPosts: (Post & { comment: string })[] = [
   {
-    ...posts.find((post) => post.id === generatePostId({ title: "웹 개발자에게 브라우저란?" }))!,
+    ...posts.find((post) => post.id === generatePostId({ title: "웹 개발자의 브라우저 알아보기" }))!,
     comment: "웹 개발자로서 브라우저에 대해 공부하신 내용을 깊이있게 정리해주신 글입니다.",
   },
   {

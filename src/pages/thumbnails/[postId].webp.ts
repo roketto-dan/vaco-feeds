@@ -1,9 +1,9 @@
 import sharp from "sharp";
-import axios from "axios";
 import type { APIRoute } from "astro";
 
 import { posts } from "../../modules/post";
 import { getImage } from "../../modules/metadata";
+import ky from "ky";
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -22,14 +22,9 @@ export const GET: APIRoute = async ({ request }) => {
       return new Response("Failed to get image", { status: 500 });
     }
 
-    const response = await axios.get(thumbnailUrl, {
-      responseType: "arraybuffer",
-    });
+    const image = await ky(thumbnailUrl).arrayBuffer();
 
-    const thumbnail = await sharp(response.data)
-      .resize(640, 360)
-      .webp()
-      .toBuffer();
+    const thumbnail = await sharp(image).resize(640, 360).webp().toBuffer();
 
     return new Response(thumbnail, {
       status: 200,

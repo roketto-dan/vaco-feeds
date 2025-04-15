@@ -1,6 +1,6 @@
 import createMetascraper from "metascraper";
 import metascraperImage from "metascraper-image";
-import axios from "axios";
+import ky from "ky";
 
 const metascraper = createMetascraper([metascraperImage()]);
 
@@ -30,7 +30,7 @@ export async function getImage(url: string): Promise<string | undefined> {
     if (cache.has(url)) {
       html = cache.get(url);
     } else {
-      const response = await axios.get(url, {
+      const response = await ky(url, {
         timeout: 5000,
         ...(url.includes("notion.site") && {
           headers: {
@@ -39,7 +39,7 @@ export async function getImage(url: string): Promise<string | undefined> {
           },
         }),
       });
-      html = response.data;
+      html = await response.text();
 
       cache.set(url, html);
     }
